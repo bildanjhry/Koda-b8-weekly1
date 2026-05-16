@@ -222,8 +222,23 @@ function handleHomeMenuText(stat){
     input:  `
 }
 
-function printQr(){
-    const qrCode =`
+
+const printing = {
+    product: function(value){
+        if(Array.isArray(value) && value.length < 1){
+            return console.log("Parameter product() beritipe array")
+        }
+
+        value.map((item, index) => {
+            if(item.size.length > 0){
+                
+            }
+            return `${index+1}. ${item.name}
+                                Rp${item.price},-`
+        })
+    },
+    qrCode: function() {
+            const qrCode =`
                                     █████████████████████████████████
                                     ████ ▄▄▄▄▄ ██ ▄▀█▀▄ ██ ▄▄▄▄▄ ████
                                     ████ █   █ ██ █▄█▄█ ██ █   █ ████
@@ -239,17 +254,16 @@ function printQr(){
                                     ████▄▄▄▄▄▄▄██▄▄███▄▄██▄▄▄▄▄██████
                                     █████████████████████████████████`
 
-    console.log(qrCode)
+            console.log(qrCode)
+        },
 
-}
-
-function printStruct(itemList, result, paymentStatus, paymentMethod, desc){
-    const strList = itemList.map((item, index) => {
-        `${index+1}. ${item.name}                  ${item.qty}x\n`
-        `Rp${item.price},-                                   \n\n`
-        
-    })
-    const struct = `
+    struct: function(itemList, result, paymentStatus, paymentMethod, desc){
+            const strList = itemList.map((item, index) => {
+                `${index+1}. ${item.name}                  ${item.qty}x\n`
+                `Rp${item.price},-                                   \n\n`
+                
+            })
+            const struct = `
                                     
                                     ----------------------------
                                             Order No. 1
@@ -270,8 +284,10 @@ function printStruct(itemList, result, paymentStatus, paymentMethod, desc){
                                     ----------------------------
                                     
                                     `
-    console.log(struct)
-} 
+            console.log(struct)
+    },
+}
+
 
 const struct = `
                                     
