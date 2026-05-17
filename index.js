@@ -451,8 +451,10 @@ function handleHomeMenuText(stat){
     2. Pilih Minum
     3. Pilih Snacks 
     4. Pilih Paket
+    5. Pilih Desert
+    6. Pilih Promo
     -------------------------
-    5. Checkout
+    7. Checkout
     
     input: `
     }
@@ -464,6 +466,8 @@ function handleHomeMenuText(stat){
     2. Pilih Minum
     3. Pilih Snacks 
     4. Pilih Paket
+    5. Pilih Desert
+    6. Pilih Promo
     
     input:  `
 }
@@ -560,34 +564,220 @@ const struct = `
                                     
                                     `
 
+function chooseItem(text, listItems, handleArr) {
+    let items = handleArr(listItems)
+
+    items.forEach((item, index) => {
+        if((text-1) === index){
+            if(shop.length < 1){
+                if(item?.size){
+                    shop.push({
+                        cat:item.cat,
+                        name:item.name,
+                        price:item.price,
+                        size: item.size,
+                        qty: 1
+                    })
+                } else {
+                    shop.push({
+                        cat:item.cat,
+                        name:item.name,
+                        price:item.price,
+                        qty: 1
+                    })
+                }
+            } else {
+                shop.forEach((shopVal, idxShop) => {
+                    if(item.name === shopVal.name){
+                        shopVal.qty += 1
+                    } 
+                const find = shop.find(val => val.name === item.name)
+                if (!find) {
+                    if(item?.size){
+                        shop.push({
+                        cat:item.cat,
+                        size:item.size,
+                        name:item.name,
+                        price:item.price,
+                        qty: 1
+                    }) 
+                    } else {
+                        shop.push({
+                            cat:item.cat,
+                            name:item.name,
+                            price:item.price,
+                            qty: 1
+                        }) 
+                    }
+                }
+            })
+        }
+
+        }
+    })
+    console.log('    --------------------\n')
+    console.log(`    Pilihan anda: `)
+
+    // menampilkan item didalam keranjang
+    shop.map((val, idx) => {
+        console.log(`    ${val.name} ${val.qty && val.qty}x`)
+    })
+
+    // konfirmasi pesan kembali
+    rl.question('\n    Ada lagi? (Y/N): ', function(aswr){
+        aswr = aswr.toLowerCase()
+
+        if(aswr === 'y') { 
+            return handleHomeMenu('1') 
+        } 
+        else if( aswr === 'n') {
+            rl.question(handleHomeMenuText('hasList'), function(ans){
+                handleHomeMenu(ans)
+            })
+        } else {
+            return console.log(`\n              \*Perintah salah`)
+        }
+    })
+    
+   
+}
+
+    function handleArr(listItems){
+        let newOne = listItems
+        let moreList = []
+    
+        listItems.map((value, indexOut) => {
+            if(value?.size && Array.isArray(value.size)) {
+                if(Array.isArray(value.size) && value.size.length > 0){
+                    value.size.forEach((item, index) => {
+                            moreList.push({
+                            id:value.id,
+                            name:value.name,
+                            price:item.price,
+                            cat:value.cat,
+                            size:item.name,
+                            isPromo:value.isPromo
+                        })
+                    })
+                }
+            }
+                        
+        })
+                    
+        let newFoods = newOne.filter((item) => item.price !== undefined)
+        return [...newFoods, ...moreList]
+    }
+
 // program untuk meng-handle menu utama
 function handleHomeMenu(ans) {
-    let input = null
+
+    // menampilkan list makanan
+    function listItem(listItems){
+
+        let listFoods = handleArr(listItems)
+
+        let format = listFoods.map((value, index) => {
+            let no = 0
+            no += (index +1)
+    
+            return`
+        ${no}. ${value.name}${value.size ? ", "+ value.size : ''}
+        Harga: Rp${value.price},-\n`
+                    }).join("")
+        return format+ `\n    input: `
+    }
+    
     switch(ans){
         case '1' :
-            rl.question(handleList('1'), function(text){
-            input = '1'
-        })
+            return rl.question(listItem(foods), function(text){
+                chooseItem(text, foods, handleArr)
+                input = '1'
+            })
             break;
         case '2' :
-            rl.question(handleList('2'), function(text){
-            input = '2'
-        })
+           let listDrinks = drinks
+
+           return rl.question(listItem(drinks), function(text){
+                chooseItem(text, drinks, handleArr)
+                input = '2'
+            })
             break;
         case '3' :
-            rl.question(handleList('3'), function(text){
-            input = '3'
-        })
+           return rl.question(listItem(desert), function(text){
+                chooseItem(text, desert, handleArr)
+                input = '3'
+            })
             break;
         case '4' :
-            rl.question(handleList('4'), function(text){
-            input = '4'
-        })
+           return rl.question(listItem(snacks), function(text){
+                chooseItem(text, snacks, handleArr)
+                input = '4'
+            })
             break;
         case '5' :
-            rl.question(handleList('5'), function(text){
-            input = '5'
-        })
+           return rl.question(listItem(paket), function(text){
+                chooseItem(text, paket, handleArr)
+                input = '5'
+            })
+            break;
+        case '6' :
+           return rl.question(listItem(happyMeal), function(text){
+                chooseItem(text, happyMeal, handleArr)
+                input = '6'
+            })
+            break;        
+        case '7' :
+           return rl.question(handleCheckout(), function(inpt){
+                if(inpt === "kembali"){
+                    rl.question(handleHomeMenuText("hasList"), function(ans){
+                        handleHomeMenu(ans)
+                    })
+                } else if(inpt === "bayar") {
+                    rl.question("Ingin menggunakan QRIS atau Tunai?\n\ninput:", function(tra){
+                        if(tra === "tunai"){
+                            printing.struct()
+                            rl.close()
+                        } else if(tra === "qris"){
+                            console.log(`\n              Proses...`)
+                            setTimeout(() => {
+                                printing.qrCode()
+                            },1500)
+                        }
+
+                        setTimeout(() => {
+                            console.log(`\n\n\n\n\n\n\n\n\n
+                       ----------------- Pembarayan berhasil -----------------\n\n`)
+
+                        console.log(struct)
+                        },3500)
+                    })
+                }
+                
+            })
+
+            function handleCheckout(){
+                let result = 0
+                shop.forEach((val) => {
+                    result += val.price
+                })
+                console.log(`
+                Pesanan anda:
+                ----------------------------`)
+            shop.forEach(val => {
+                console.log(`
+                ${val.name}
+                Rp${val.price},-
+                ${val.qty}X
+                ${val?.size ? val.size : ''}\n`)
+            })
+            console.log(`
+                            Total: Rp${result},-
+                ----------------------------
+                Bayar        |       Kembali
+                
+                input: `)
+                return
+            }
             break;
         case 'back':
             rl.question(homeMenu, function(inp){
@@ -600,7 +790,7 @@ function handleHomeMenu(ans) {
                 handleHomeMenu(dec)
             }
         }, 2500)
-            console.log("Masukan anda salah \n")
+            console.log(`    Masukan anda salah \n`)
     }
 
 }
