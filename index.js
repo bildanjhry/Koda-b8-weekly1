@@ -238,7 +238,6 @@ const paket = [
     {
         id:'p1',
         name:"Paket Hemat Fish Fillet Burger, Medium",
-        desc:"PaHeBat Korean Soy Garlic Wings + PaHeBat McSpaghetti Ayam McD Spicy + 2 McFlurry feat. OREO",
         menu:[{
             item: foods[5],
             size:foods[5].size[1], 
@@ -446,30 +445,32 @@ function handleHomeMenuText(stat){
  
     if(stat === 'hasList'){
     return `
-    Home :
-    1. Pilih Makan
-    2. Pilih Minum
-    3. Pilih Snacks 
-    4. Pilih Desert
-    5. Pilih Paket
+    Home Menu:
+
+    1. Makan
+    2. Minum
+    3. Snacks 
+    4. Desert
+    5. Paket
     6. Happy Meal
-    7. Pilih Promo
+    7. Promo
     -------------------------
     8. Checkout
     
     input: `
     }
     return `
-    ----------- Selamat datang di McD ----------
+    **----------- Selamat datang di McD ----------**
     
-    Home :
-    1. Pilih Makan
-    2. Pilih Minum
-    3. Pilih Snacks 
-    4. Pilih Desert
-    5. Pilih Paket
+    Home Menu:
+
+    1. Makan
+    2. Minum
+    3. Snacks 
+    4. Desert
+    5. Paket
     6. Happy Meal
-    7. Pilih Promo
+    7. Promo
     
     input:  `
 }
@@ -509,37 +510,30 @@ const printing = {
         },
 
     struct: function(itemList, result, paymentStatus, paymentMethod, desc){
-            
-            console.log(shop)
-            const strList = itemList.map((item, index) => {
-                return `${index+1}. ${item.name}                  ${item?.qty ? item.qty+'x' : ''}\n`
-                `Rp${item.price},-                                   \n\n`
-                
+                console.log(`
+                ---------------------------------------
+                               Order No. 1`)
+        itemList.forEach((val, index) => {
+                console.log(`
+                ${index+1}. ${val.name}${val?.size ? ', '+val.size : ''}
+                   ${val.qty}X
+                   Rp${val.price},-`)
             })
+            console.log(`
+                                     Total: Rp${result},-
+                ---------------------------------------
+                Status: ${paymentStatus}
+                Payment: ${paymentMethod}
 
-            console.log(strList)
-            const struct = `
-                                    
-                                    ----------------------------
-                                            Order No. 1
 
-                                    ${strList}
-    
-                                                Total: Rp${result},-
-                                    ----------------------------
-                                    
-                                    Status: ${paymentStatus}
-                                    Payment: ${paymentMethod}
-    
-                                    ${desc}
-    
-                                            Terimakasih.
-                                    ----------------------------
-                                       ||| |||| ||||| || ||||
-                                    ----------------------------
-                                    
-                                    `
-            console.log(struct)
+                ${desc}
+                       
+
+                              Terimakasih.
+                ---------------------------------------
+                   ||| |||| ||||| || |||| |||| |||| |
+                ---------------------------------------\n\n`)
+
     },
 }
 
@@ -576,6 +570,17 @@ function chooseItem(input, text, listItems, handleArr) {
     items.forEach((item, index) => {
         if((text-1) === index){
             if(shop.length < 1){
+                if(item?.menu){
+                    shop.push({
+                        id:item.id,
+                        cat:item.cat,
+                        name:item.name,
+                        menu:item.menu,
+                        price:item.price,
+                        isPromo:item.isPromo,
+                        qty: 1
+                    })
+                }
                 if(item?.size){
                     shop.push({
                         id:item.id,
@@ -619,7 +624,18 @@ function chooseItem(input, text, listItems, handleArr) {
                         price:item.price,
                         qty: 1
                     }) 
-                    } else {
+                    } if(item?.menu){
+                        shop.push({
+                            id:item.id,
+                            cat:item.cat,
+                            name:item.name,
+                            menu:item.menu,
+                            price:item.price,
+                            isPromo:item.isPromo,
+                            qty: 1
+                        })
+                    } 
+                    else {
                         shop.push({
                             id:item.id,
                             cat:item.cat,
@@ -628,15 +644,13 @@ function chooseItem(input, text, listItems, handleArr) {
                             qty: 1
                         }) 
                 }
-                    
+
                 }
- 
         }
 
         }
     })
 
-    console.log(shop)
     console.log('    --------------------\n')
     console.log(`    Pilihan anda: `)
 
@@ -648,6 +662,7 @@ function chooseItem(input, text, listItems, handleArr) {
     // konfirmasi pesanan
     rl.question('\n    Ada lagi? (Y/N): ', function(aswr){
         aswr = aswr.toLowerCase()
+        console.log(input)
 
         if(aswr === 'y') { 
             return handleHomeMenu(input) 
@@ -660,6 +675,7 @@ function chooseItem(input, text, listItems, handleArr) {
             return console.log(`\n              \*Perintah salah`)
         }
     })
+    
    
 }
 
@@ -705,9 +721,73 @@ function listItem(listItems){
         return format+ `\n    input: `
 }
 
+function handleCart(ans) {
+    switch(ans){
+        case '1' :
+            let result = 0
+            shop.forEach((item) => {
+                    result += item.price
+            })
+            return rl.question("\n\n    Ingin menggunakan 1. QRIS atau 2. Tunai?\n\n    input: ", function(tra){
+                if(tra === "2"){
+                            console.log(`\n                      Proses...\n\n\n\n`)
+                            setTimeout(() => {
+                                printing.struct(shop, result, 'Unpaid', 'Tunai', 'Silahkan berikan ini kepada kasir.' )
+                                shop = []
+                            },1500)
+                            setTimeout(() => {
+                                rl.question(handleHomeMenuText(""), function(ans){
+                                    handleHomeMenu(ans)
+                                })
+                            },8500)
+                } else if(tra === "1"){
+                            console.log(`\n                       Proses...`)
+                            setTimeout(() => {
+                                printing.qrCode()
+                            },1500)
+
+                            setTimeout(() => {
+                                console.log(`\n\n\n\n\n\n\n\n\n
+        ----------------- Pembarayan berhasil -----------------\n\n`)
+    
+                           
+                            printing.struct(shop, result, 'Paid', 'QRIS', 'Silahkan tunggu pesanan anda.' )
+                        },3500)
+                        setTimeout(() => {
+                                shop = []
+                                rl.question(handleHomeMenuText(""), function(ans){
+                                    handleHomeMenu(ans)
+                                })
+                            },8500)
+                        }
+
+
+            })
+            break;
+        case '2' :
+            return rl.question(handleHomeMenuText("hasList"), function(ans){
+                      handleHomeMenu(ans)
+                    })
+        case '3' :
+            return rl.question("\n\n    Silahkan pilih item: ", function(ans){
+                      const idx = parseInt(ans)-1
+
+                      shop.map((item, index) => {
+                        if(index === idx){
+                            if(item.qty > 1){
+                                item.qty -= 1
+                            } else {
+                                shop.splice(idx, 1)
+                            }
+                        }
+                      })
+                      handleHomeMenu('8')
+                    })
+    }
+}
+
 // handle menu utama
 function handleHomeMenu(ans) {
-
     switch(ans){
         case '1' :
             return rl.question(listItem(foods), function(text){
@@ -731,54 +811,21 @@ function handleHomeMenu(ans) {
             break;
         case '5' :
            return rl.question(listItem(paket), function(text){
-                chooseItem(5, text, paket, handleArr)
+                chooseItem('5', text, paket, handleArr)
             })
             break;
         case '6' :
            return rl.question(listItem(happyMeal), function(text){
-                chooseItem(6, text, happyMeal, handleArr)
+                chooseItem('6', text, happyMeal, handleArr)
             })
+        // case '7' :
+        //    return rl.question(listItem(happyMeal), function(text){
+        //         chooseItem(6, text, happyMeal, handleArr)
+        //     })
             break;        
         case '8' :
            return rl.question(handleCheckout(), function(inpt){
-                if(inpt === "kembali"){
-                    rl.question(handleHomeMenuText("hasList"), function(ans){
-                        handleHomeMenu(ans)
-                    })
-                } else if(inpt === "bayar") {
-                    rl.question("Ingin menggunakan QRIS atau Tunai?\n\ninput:", function(tra){
-                        if(tra === "tunai"){
-                            let result = 0
-                            shop.forEach((item) => {
-                                 result += item.price
-                            })
-                            printing.struct(shop, result, 'Unpaid', 'Tunai', 'Silahkan berikan kepada kasir untuk melanjutkan pemesanan.' )
-                            console.log(result)
-                            rl.close()
-                        } else if(tra === "qris"){
-                            console.log(`\n              Proses...`)
-                            setTimeout(() => {
-                                printing.qrCode()
-                            },1500)
-                        }
-
-                        setTimeout(() => {
-                            console.log(`\n\n\n\n\n\n\n\n\n
-                       ----------------- Pembarayan berhasil -----------------\n\n`)
-
-                        console.log(struct)
-                        shop = []
-            
-                        },3500)
-
-                        setTimeout(() => {
-                            rl.question(handleHomeMenuText(""), function(ans){
-                                handleHomeMenu(ans)
-                            })
-                        },8500)
-                    })
-                }
-                
+                  handleCart(inpt)
             })
 
             function handleCheckout(){
@@ -788,21 +835,19 @@ function handleHomeMenu(ans) {
                 })
                 console.log(`
                 Pesanan anda:
-                ----------------------------`)
-            shop.forEach(val => {
+                ------------------------------------------`)
+            shop.forEach((val, index) => {
                 console.log(`
-                ${val.name}
-                Rp${val.price},-
-                ${val.qty}X
-                ${val?.size ? val.size : ''}\n`)
+                ${index+1}. ${val.name}${val?.size ? ', '+val.size : ''}
+                   ${val.qty}X
+                   Rp${val.price},-\n`)
             })
-            console.log(`
-                            Total: Rp${result},-
-                ----------------------------
-                Bayar        |       Kembali
+            return `
+                                         Total: Rp${result},-
+                ------------------------------------------
+                1.Bayar         2.kembali          3.Hapus
                 
-                input: `)
-                return
+                input: `
             }
             break;
         case 'back':
@@ -811,12 +856,8 @@ function handleHomeMenu(ans) {
             })
             break;
         default :
-         setTimeout(function () {
-            if (input !== ans) {
-                handleHomeMenu(dec)
-            }
-        }, 2500)
             console.log(`    Masukan anda salah \n`)
+            handleHomeMenu(ans) 
     }
 
 }
