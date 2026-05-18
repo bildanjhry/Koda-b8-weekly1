@@ -186,49 +186,49 @@ const snacks = [
         id:'s1',
         name:"Apple Pie",
         cat:{id:3, name: "snack"},
-        harga:13000,
-        isPromo:true
+        price:13000,
+        isPromo:false
     },
     {
         id:'s2',
         name:"HashBrown",
         cat:{id:3, name: "snack"},
-        harga:15000,
+        price:15000,
         isPromo:false
     },
     {
         id:'s3',
         name:"Sweet Corn",
         cat:{id:3, name: "snack"},
-        harga:13000,
+        price:13000,
         isPromo:false
     },
     {
         id:'s4',
         name:"McSpaghetti Pedas Manis",
         cat:{id:3, name: "snack"},
-        harga:15000,
+        price:15000,
         isPromo:false
     },
     {
         id:'s5',
         name:"McSpaghetti",
         cat:{id:3, name: "snack"},
-        harga:16000,
+        price:16000,
         isPromo:false
     },
     {
         id:'s6',
         name:"McNuggets 4 pcs",
         cat:{id:3, name: "snack"},
-        harga:28500,
+        price:28500,
         isPromo:false
     },
     {
         id:'s7',
         name:"Chicken Snack Wrap",
         cat:{id:3, name: "snack"},
-        harga:19500,
+        price:19500,
         isPromo:false
     },
 
@@ -310,14 +310,14 @@ const paket = [
             size:drinks[6].size[2],
             qty:1,
         }],
-        price:0,
+        price:63500,
         cat:{id:6, name: "paket"},
         isPromo:false,
     },
      {
         id:'p4',
-        name:"PaNas",
-        desc:"PaNas 2 Spicy with Fries, Large",
+        name:"PaNas 2 Spicy with Fries, Large",
+        desc:"PaNas",
         menu:[{
             item :{name: "Paha ayam Spicy"},
             qty:2
@@ -332,14 +332,14 @@ const paket = [
             size:drinks[6].size[2],
             qty:1,
         }],
-        price:0,
+        price:63500,
         cat:{id:6, name: "paket"},
         isPromo:false,
     },
     {
         id:'p5',
-        name:"PaNas",
-        desc:"PaNas 2 Spicy, Medium",
+        name:"PaNas 2 Spicy, Medium",
+        desc:"PaNas",
         menu:[{
             item :{name: "Paha ayam Spicy"},
             qty:2
@@ -379,8 +379,8 @@ const paket = [
     },
     {
         id:'p7',
-        name:"PaNas",
-        desc:"PaNas 1 Krispy",
+        name:"PaNas 1 Krispy",
+        desc:"PaNas",
         menu:[{
             item :foods[6],
             qty:1
@@ -440,7 +440,7 @@ const happyMeal = [
     },
 ]
 
-const shop = []
+let shop = []
 
 function handleHomeMenuText(stat){
  
@@ -450,11 +450,12 @@ function handleHomeMenuText(stat){
     1. Pilih Makan
     2. Pilih Minum
     3. Pilih Snacks 
-    4. Pilih Paket
-    5. Pilih Desert
-    6. Pilih Promo
+    4. Pilih Desert
+    5. Pilih Paket
+    6. Happy Meal
+    7. Pilih Promo
     -------------------------
-    7. Checkout
+    8. Checkout
     
     input: `
     }
@@ -465,13 +466,13 @@ function handleHomeMenuText(stat){
     1. Pilih Makan
     2. Pilih Minum
     3. Pilih Snacks 
-    4. Pilih Paket
-    5. Pilih Desert
-    6. Pilih Promo
+    4. Pilih Desert
+    5. Pilih Paket
+    6. Happy Meal
+    7. Pilih Promo
     
     input:  `
 }
-
 
 const printing = {
     product: function(value){
@@ -508,11 +509,15 @@ const printing = {
         },
 
     struct: function(itemList, result, paymentStatus, paymentMethod, desc){
+            
+            console.log(shop)
             const strList = itemList.map((item, index) => {
-                `${index+1}. ${item.name}                  ${item.qty}x\n`
+                return `${index+1}. ${item.name}                  ${item?.qty ? item.qty+'x' : ''}\n`
                 `Rp${item.price},-                                   \n\n`
                 
             })
+
+            console.log(strList)
             const struct = `
                                     
                                     ----------------------------
@@ -537,6 +542,7 @@ const printing = {
             console.log(struct)
     },
 }
+
 
 const struct = `
                                     
@@ -564,22 +570,26 @@ const struct = `
                                     
                                     `
 
-function chooseItem(text, listItems, handleArr) {
-    let items = handleArr(listItems)
+function chooseItem(input, text, listItems, handleArr) {
 
+    let items = handleArr(listItems)
     items.forEach((item, index) => {
         if((text-1) === index){
             if(shop.length < 1){
                 if(item?.size){
                     shop.push({
+                        id:item.id,
                         cat:item.cat,
                         name:item.name,
                         price:item.price,
                         size: item.size,
                         qty: 1
                     })
-                } else {
+                } 
+                else {
+                    console.log("nambah ini")
                     shop.push({
+                        id:item.id,
                         cat:item.cat,
                         name:item.name,
                         price:item.price,
@@ -587,14 +597,22 @@ function chooseItem(text, listItems, handleArr) {
                     })
                 }
             } else {
-                shop.forEach((shopVal, idxShop) => {
-                    if(item.name === shopVal.name){
-                        shopVal.qty += 1
+                const find = shop.find(val => val.id === item.id)
+                    shop.forEach((shopVal, idxShop) => {
+                    if(item.id === shopVal.id){
+                        if(item.name === shopVal.name && !item.size && !shopVal.size){
+                         return shopVal.qty += 1
+                        }
+                        else if((item?.size && shopVal?.size) && item?.size === shopVal?.size){
+                          return shopVal.qty += 1
+                        }
                     } 
-                const find = shop.find(val => val.name === item.name)
-                if (!find) {
+                    })
+
+                    if(!find){
                     if(item?.size){
                         shop.push({
+                        id:item.id,
                         cat:item.cat,
                         size:item.size,
                         name:item.name,
@@ -603,32 +621,36 @@ function chooseItem(text, listItems, handleArr) {
                     }) 
                     } else {
                         shop.push({
+                            id:item.id,
                             cat:item.cat,
                             name:item.name,
                             price:item.price,
                             qty: 1
                         }) 
-                    }
                 }
-            })
+                    
+                }
+ 
         }
 
         }
     })
+
+    console.log(shop)
     console.log('    --------------------\n')
     console.log(`    Pilihan anda: `)
 
-    // menampilkan item didalam keranjang
+    // menampilkan makanan/minuman yang didalam keranjang
     shop.map((val, idx) => {
-        console.log(`    ${val.name} ${val.qty && val.qty}x`)
+        console.log(`    ${val.name}${val?.size ? ', '+val.size : ''} ${val.qty && val.qty}x`)
     })
 
-    // konfirmasi pesan kembali
+    // konfirmasi pesanan
     rl.question('\n    Ada lagi? (Y/N): ', function(aswr){
         aswr = aswr.toLowerCase()
 
         if(aswr === 'y') { 
-            return handleHomeMenu('1') 
+            return handleHomeMenu(input) 
         } 
         else if( aswr === 'n') {
             rl.question(handleHomeMenuText('hasList'), function(ans){
@@ -638,95 +660,86 @@ function chooseItem(text, listItems, handleArr) {
             return console.log(`\n              \*Perintah salah`)
         }
     })
-    
    
 }
 
-    function handleArr(listItems){
-        let newOne = listItems
-        let moreList = []
+// handle array list
+function handleArr(listItems){
+    let newOne = listItems
+    let moreList = []
     
-        listItems.map((value, indexOut) => {
-            if(value?.size && Array.isArray(value.size)) {
-                if(Array.isArray(value.size) && value.size.length > 0){
-                    value.size.forEach((item, index) => {
-                            moreList.push({
-                            id:value.id,
-                            name:value.name,
-                            price:item.price,
-                            cat:value.cat,
-                            size:item.name,
-                            isPromo:value.isPromo
-                        })
+    listItems.map((value, indexOut) => {
+        if(value?.size && Array.isArray(value.size)) {
+            if(Array.isArray(value.size) && value.size.length > 0){
+                value.size.forEach((item, index) => {
+                        moreList.push({
+                        id:(value.id+item.name[0]),
+                        name:value.name,
+                        price:item.price,
+                        cat:value.cat,
+                        size:item.name,
+                        isPromo:value.isPromo
                     })
-                }
+                })
             }
+        }
                         
-        })
+    })
                     
-        let newFoods = newOne.filter((item) => item.price !== undefined)
-        return [...newFoods, ...moreList]
-    }
+    let newFoods = newOne.filter((item) => item.price !== undefined)
+    return [...newFoods, ...moreList]
+}
 
-// program untuk meng-handle menu utama
-function handleHomeMenu(ans) {
+// menampilkan list item
+function listItem(listItems){
 
-    // menampilkan list makanan
-    function listItem(listItems){
-
-        let listFoods = handleArr(listItems)
-
-        let format = listFoods.map((value, index) => {
-            let no = 0
-            no += (index +1)
+    let listFoods = handleArr(listItems)
+    let format = listFoods.map((value, index) => {
+        let no = 0
+        no += (index +1)
     
-            return`
+        return`
         ${no}. ${value.name}${value.size ? ", "+ value.size : ''}
         Harga: Rp${value.price},-\n`
                     }).join("")
         return format+ `\n    input: `
-    }
-    
+}
+
+// handle menu utama
+function handleHomeMenu(ans) {
+
     switch(ans){
         case '1' :
             return rl.question(listItem(foods), function(text){
-                chooseItem(text, foods, handleArr)
-                input = '1'
+                chooseItem('1', text, foods, handleArr)
             })
             break;
         case '2' :
-           let listDrinks = drinks
-
            return rl.question(listItem(drinks), function(text){
-                chooseItem(text, drinks, handleArr)
-                input = '2'
+                chooseItem('2', text, drinks, handleArr)
             })
             break;
         case '3' :
-           return rl.question(listItem(desert), function(text){
-                chooseItem(text, desert, handleArr)
-                input = '3'
+           return rl.question(listItem(snacks), function(text){
+                chooseItem('3', text, snacks, handleArr)
             })
             break;
         case '4' :
-           return rl.question(listItem(snacks), function(text){
-                chooseItem(text, snacks, handleArr)
-                input = '4'
+           return rl.question(listItem(desert), function(text){
+                chooseItem('4', text, desert, handleArr)
             })
             break;
         case '5' :
            return rl.question(listItem(paket), function(text){
-                chooseItem(text, paket, handleArr)
-                input = '5'
+                chooseItem(5, text, paket, handleArr)
             })
             break;
         case '6' :
            return rl.question(listItem(happyMeal), function(text){
-                chooseItem(text, happyMeal, handleArr)
-                input = '6'
+                chooseItem(6, text, happyMeal, handleArr)
             })
             break;        
-        case '7' :
+        case '8' :
            return rl.question(handleCheckout(), function(inpt){
                 if(inpt === "kembali"){
                     rl.question(handleHomeMenuText("hasList"), function(ans){
@@ -735,7 +748,12 @@ function handleHomeMenu(ans) {
                 } else if(inpt === "bayar") {
                     rl.question("Ingin menggunakan QRIS atau Tunai?\n\ninput:", function(tra){
                         if(tra === "tunai"){
-                            printing.struct()
+                            let result = 0
+                            shop.forEach((item) => {
+                                 result += item.price
+                            })
+                            printing.struct(shop, result, 'Unpaid', 'Tunai', 'Silahkan berikan kepada kasir untuk melanjutkan pemesanan.' )
+                            console.log(result)
                             rl.close()
                         } else if(tra === "qris"){
                             console.log(`\n              Proses...`)
@@ -749,7 +767,15 @@ function handleHomeMenu(ans) {
                        ----------------- Pembarayan berhasil -----------------\n\n`)
 
                         console.log(struct)
+                        shop = []
+            
                         },3500)
+
+                        setTimeout(() => {
+                            rl.question(handleHomeMenuText(""), function(ans){
+                                handleHomeMenu(ans)
+                            })
+                        },8500)
                     })
                 }
                 
