@@ -537,33 +537,6 @@ const printing = {
     },
 }
 
-
-const struct = `
-                                    
-                                    ----------------------------
-                                            Order No. 1
-    
-                                    1. Ayam                 1x
-                                    Rp40000,-
-                                    2. Burger               2x
-                                    Rp40000,-
-    
-                                                Total: Rp80000,-
-                                    ----------------------------
-                                    
-                                    Status: Paid
-                                    Payment: QRIS
-    
-                                    Silahkan berikan struct ini 
-                                    ke kasir
-    
-                                            Terimakasih.
-                                    ----------------------------
-                                       ||| |||| ||||| || ||||
-                                    ----------------------------
-                                    
-                                    `
-
 function chooseItem(input, text, listItems, handleArr) {
 
     let items = handleArr(listItems)
