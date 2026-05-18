@@ -453,9 +453,8 @@ function handleHomeMenuText(stat){
     4. Desert
     5. Paket
     6. Happy Meal
-    7. Promo
     -------------------------
-    8. Checkout
+    7. Checkout
     
     input: `
     }
@@ -470,7 +469,6 @@ function handleHomeMenuText(stat){
     4. Desert
     5. Paket
     6. Happy Meal
-    7. Promo
     
     input:  `
 }
@@ -538,10 +536,19 @@ const printing = {
 }
 
 function chooseItem(input, text, listItems, handleArr) {
-
     let items = handleArr(listItems)
+    let isFound = false
+    let currInput = text-1
+
+    if(text > items.length || isNaN(currInput)){
+        console.log('\n\n     Pilihan tidak tersedia.')
+        handleHomeMenu(input)
+        return
+    }
+
     items.forEach((item, index) => {
-        if((text-1) === index){
+        if(currInput === index){
+            isFound = true
             if(shop.length < 1){
                 if(item?.menu){
                     shop.push({
@@ -555,6 +562,7 @@ function chooseItem(input, text, listItems, handleArr) {
                     })
                 }
                 if(item?.size){
+                    console.log(item.size)
                     shop.push({
                         id:item.id,
                         cat:item.cat,
@@ -563,9 +571,10 @@ function chooseItem(input, text, listItems, handleArr) {
                         size: item.size,
                         qty: 1
                     })
-                } 
-                else {
-                    console.log("nambah ini")
+                }
+                else if(!item.menu) {
+                    console.log('masuk ini')
+                    console.log(item)
                     shop.push({
                         id:item.id,
                         cat:item.cat,
@@ -588,69 +597,75 @@ function chooseItem(input, text, listItems, handleArr) {
                     })
 
                     if(!find){
-                    if(item?.size){
-                        shop.push({
-                        id:item.id,
-                        cat:item.cat,
-                        size:item.size,
-                        name:item.name,
-                        price:item.price,
-                        qty: 1
-                    }) 
-                    } if(item?.menu){
-                        shop.push({
+
+                        if(item?.size){
+                            shop.push({
                             id:item.id,
                             cat:item.cat,
-                            name:item.name,
-                            menu:item.menu,
-                            price:item.price,
-                            isPromo:item.isPromo,
-                            qty: 1
-                        })
-                    } 
-                    else {
-                        shop.push({
-                            id:item.id,
-                            cat:item.cat,
+                            size:item.size,
                             name:item.name,
                             price:item.price,
                             qty: 1
                         }) 
-                }
+                        } if(item?.menu){
+                            shop.push({
+                                id:item.id,
+                                cat:item.cat,
+                                name:item.name,
+                                menu:item.menu,
+                                price:item.price,
+                                isPromo:item.isPromo,
+                                qty: 1
+                            })
+                        } 
+                        else if(item.menu === "undefined" || item.size === "undefined") {
+                            console.log(item?.size)
+                            console.log('masuk sini')
+                            shop.push({
+                                id:item.id,
+                                cat:item.cat,
+                                name:item.name,
+                                price:item.price,
+                                qty: 1
+                            }) 
+                        }
 
-                }
+                    }
         }
 
-        }
-    })
-
-    console.log('    --------------------\n')
-    console.log(`    Pilihan anda: `)
-
-    // menampilkan makanan/minuman yang didalam keranjang
-    shop.map((val, idx) => {
-        console.log(`    ${val.name}${val?.size ? ', '+val.size : ''} ${val.qty && val.qty}x`)
-    })
-
-    // konfirmasi pesanan
-    rl.question('\n    Ada lagi? (Y/N): ', function(aswr){
-        aswr = aswr.toLowerCase()
-        console.log(input)
-
-        if(aswr === 'y') { 
-            return handleHomeMenu(input) 
-        } 
-        else if( aswr === 'n') {
-            rl.question(handleHomeMenuText('hasList'), function(ans){
-                handleHomeMenu(ans)
-            })
         } else {
-            return console.log(`\n              \*Perintah salah`)
+           
         }
     })
+
+    if(isFound){
+        console.log('    --------------------\n')
+        console.log(`    Pilihan anda: `)
     
-   
-}
+        // menampilkan makanan/minuman yang didalam keranjang
+        shop.map((val, idx) => {
+            console.log(`    ${val.name}${val?.size ? ', '+val.size : ''} ${val.qty && val.qty}x`)
+        })
+    
+        // konfirmasi pesanan
+        rl.question('\n    Ada lagi? (Y/N): ', function(aswr){
+            aswr = aswr.toLowerCase()
+            console.log(input)
+    
+            if(aswr === 'y') { 
+                return handleHomeMenu(input) 
+            } 
+            else if( aswr === 'n') {
+                rl.question(handleHomeMenuText('hasList'), function(ans){
+                    handleHomeMenu(ans)
+                })
+            } else {
+                return console.log(`\n              \*Perintah salah`)
+            }
+        })
+    }
+
+    }
 
 // handle array list
 function handleArr(listItems){
@@ -672,7 +687,6 @@ function handleArr(listItems){
                 })
             }
         }
-                        
     })
                     
     let newFoods = newOne.filter((item) => item.price !== undefined)
@@ -681,7 +695,6 @@ function handleArr(listItems){
 
 // menampilkan list item
 function listItem(listItems){
-
     let listFoods = handleArr(listItems)
     let format = listFoods.map((value, index) => {
         let no = 0
@@ -722,8 +735,6 @@ function handleCart(ans) {
                             setTimeout(() => {
                                 console.log(`\n\n\n\n\n\n\n\n\n
         ----------------- Pembarayan berhasil -----------------\n\n`)
-    
-                           
                             printing.struct(shop, result, 'Paid', 'QRIS', 'Silahkan tunggu pesanan anda.' )
                         },3500)
                         setTimeout(() => {
@@ -733,8 +744,6 @@ function handleCart(ans) {
                                 })
                             },8500)
                         }
-
-
             })
             break;
         case '2' :
@@ -791,12 +800,8 @@ function handleHomeMenu(ans) {
            return rl.question(listItem(happyMeal), function(text){
                 chooseItem('6', text, happyMeal, handleArr)
             })
-        // case '7' :
-        //    return rl.question(listItem(happyMeal), function(text){
-        //         chooseItem(6, text, happyMeal, handleArr)
-        //     })
             break;        
-        case '8' :
+        case '7' :
            return rl.question(handleCheckout(), function(inpt){
                   handleCart(inpt)
             })
@@ -829,13 +834,16 @@ function handleHomeMenu(ans) {
             })
             break;
         default :
-            console.log(`    Masukan anda salah \n`)
-            handleHomeMenu(ans) 
+            console.log(`\n\n   5*Masukan anda salah \n`)
+            init()
     }
-
 }
 
-// init pertanyaan
-rl.question(handleHomeMenuText(""), function(ans){
-    handleHomeMenu(ans)
-})
+// pertanyaan awal
+function init(){
+    rl.question(handleHomeMenuText(""), function(ans){
+        handleHomeMenu(ans)
+    })
+}
+
+init()
