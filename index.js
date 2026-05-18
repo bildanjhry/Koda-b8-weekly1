@@ -573,8 +573,6 @@ function chooseItem(input, text, listItems, handleArr) {
                     })
                 }
                 else if(!item.menu) {
-                    console.log('masuk ini')
-                    console.log(item)
                     shop.push({
                         id:item.id,
                         cat:item.cat,
@@ -633,9 +631,7 @@ function chooseItem(input, text, listItems, handleArr) {
                     }
         }
 
-        } else {
-           
-        }
+        } 
     })
 
     if(isFound){
