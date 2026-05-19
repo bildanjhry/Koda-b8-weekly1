@@ -2,10 +2,10 @@ import { printing } from "../utils/print-struct.js";
 import { rl } from "../work.js";
 
 export let shop = [];
+export let order = 0;
 
 export function handleCart(
   ans, 
-  order, 
   init, 
   handleHomeMenu, 
   handleHomeMenuText
