@@ -5,6 +5,8 @@ const rl = createInterface({
     output: process.stdout
 })
 
+let order = 0
+
 const foods = [
     {
         id:'f1',
@@ -510,7 +512,9 @@ const printing = {
     struct: function(itemList, result, paymentStatus, paymentMethod, desc){
                 console.log(`
                 ---------------------------------------
-                               Order No. 1`)
+
+                               Order No. ${order}
+                                            `)
         itemList.forEach((val, index) => {
                 console.log(`
                 ${index+1}. ${val.name}${val?.size ? ', '+val.size : ''}
@@ -518,7 +522,7 @@ const printing = {
                    Rp${val.price},-`)
             })
             console.log(`
-                                     Total: Rp${result},-
+                                      Total: Rp${result},-
                 ---------------------------------------
                 Status: ${paymentStatus}
                 Payment: ${paymentMethod}
@@ -562,7 +566,6 @@ function chooseItem(input, text, listItems, handleArr) {
                     })
                 }
                 if(item?.size){
-                    console.log(item.size)
                     shop.push({
                         id:item.id,
                         cat:item.cat,
@@ -595,7 +598,6 @@ function chooseItem(input, text, listItems, handleArr) {
                     })
 
                     if(!find){
-
                         if(item?.size){
                             shop.push({
                             id:item.id,
@@ -646,7 +648,6 @@ function chooseItem(input, text, listItems, handleArr) {
         // konfirmasi pesanan
         rl.question('\n    Ada lagi? (Y/N): ', function(aswr){
             aswr = aswr.toLowerCase()
-            console.log(input)
     
             if(aswr === 'y') { 
                 return handleHomeMenu(input) 
@@ -656,7 +657,9 @@ function chooseItem(input, text, listItems, handleArr) {
                     handleHomeMenu(ans)
                 })
             } else {
-                return console.log(`\n              \*Perintah salah`)
+                console.log(`\n\n       \**Perintah salah\n`)
+                handleHomeMenu(input)
+                return 
             }
         })
     }
@@ -713,6 +716,7 @@ function handleCart(ans) {
             return rl.question("\n\n    Ingin menggunakan 1. QRIS atau 2. Tunai?\n\n    input: ", function(tra){
                 if(tra === "2"){
                             console.log(`\n                      Proses...\n\n\n\n`)
+                            order += 1
                             setTimeout(() => {
                                 printing.struct(shop, result, 'Unpaid', 'Tunai', 'Silahkan berikan ini kepada kasir.' )
                                 shop = []
@@ -724,6 +728,7 @@ function handleCart(ans) {
                             },8500)
                 } else if(tra === "1"){
                             console.log(`\n                       Proses...`)
+                            order += 1
                             setTimeout(() => {
                                 printing.qrCode()
                             },1500)
@@ -749,7 +754,6 @@ function handleCart(ans) {
         case '3' :
             return rl.question("\n\n    Silahkan pilih item: ", function(ans){
                       const idx = parseInt(ans)-1
-
                       shop.map((item, index) => {
                         if(index === idx){
                             if(item.qty > 1){
@@ -759,8 +763,12 @@ function handleCart(ans) {
                             }
                         }
                       })
-                      handleHomeMenu('8')
+                      handleHomeMenu('7')
                     })
+        default: 
+            console.log(`\n\n    *Perintah Salah\n\n`)
+            init("hasList")
+            return
     }
 }
 
@@ -830,14 +838,15 @@ function handleHomeMenu(ans) {
             })
             break;
         default :
-            console.log(`\n\n   5*Masukan anda salah \n`)
+            console.log(`\n\n   *Input anda salah \n`)
             init()
     }
 }
 
 // pertanyaan awal
-function init(){
-    rl.question(handleHomeMenuText(""), function(ans){
+function init(text){
+    let newText = (text ? text : "")
+    rl.question(handleHomeMenuText(newText), function(ans){
         handleHomeMenu(ans)
     })
 }
