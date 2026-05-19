@@ -1,0 +1,21 @@
+{
+  "name": "mc-donalds",
+  "version": "1.0.0",
+  "description": "program f&b",
+  "license": "MIT",
+  "author": "space-cowboy",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node work.js",
+    "dev": "node --watch work.js",
+    "lint": "eslint work.js utils/*.js actions/*.js",
+    "lint:fix": "eslint work.js utils/*.js actions/*.js --fix"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.4.0",
+    "globals": "^17.6.0"
+  }
+}
