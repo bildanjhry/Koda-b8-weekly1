@@ -11,8 +11,6 @@ export const rl = createInterface({
   output: process.stdout
 });
 
-const order = 0;
-
 export function handleHomeMenuText(stat){
  
   if(stat === 'hasList'){
@@ -81,7 +79,7 @@ export function handleHomeMenu(ans) {
       break;        
     case '7' :
       rl.question(handleCheckout(shop), function(inpt){
-        handleCart(inpt, order, init, handleHomeMenu, handleHomeMenuText);
+        handleCart(inpt, init, handleHomeMenu, handleHomeMenuText);
       });
       break;
     default :
