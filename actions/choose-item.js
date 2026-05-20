@@ -1,4 +1,4 @@
-import { handleHomeMenu, handleHomeMenuText, rl } from "../work.js";
+import { handleHomeMenu, handleHomeMenuText, rl } from "../index.js";
 
 export function chooseItem(input, shop, text, listItems, handleArr) {
   const items = handleArr(listItems);

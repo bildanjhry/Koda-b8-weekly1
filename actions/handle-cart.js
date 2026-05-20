@@ -1,5 +1,5 @@
 import { printing } from "../utils/print-struct.js";
-import { rl } from "../work.js";
+import { rl } from "../index.js";
 
 export let shop = [];
 export let order = 0;
