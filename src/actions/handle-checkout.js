@@ -1,6 +1,7 @@
 import moneyFormat from "../utils/money-format.js";
 
 export function handleCheckout(shop){
+
    let result = 0;
    shop.forEach((val) => {
       if(val.qty > 1){
@@ -22,7 +23,7 @@ export function handleCheckout(shop){
    return `
                                          Total: Rp${moneyFormat(result)[0]},-
                 ------------------------------------------
-                1.Bayar         2.kembali          3.Hapus
+                1. Bayar        2. Kembali        3. Hapus
                 
     Input: `;
 }

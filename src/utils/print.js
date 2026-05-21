@@ -1,12 +1,35 @@
 import moneyFormat from "./money-format.js";
 
 export const printing = {
+   handleHomeMenuText: function(stat){
+      if(stat === 'hasList'){
+         return `
+    Home Menu:
 
-   product: function(value){
-      if(Array.isArray(value) && value.length < 1){
-         return console.log("Parameter product() tidak diterima");
+    1. Makan
+    2. Minum
+    3. Snacks 
+    4. Desert
+    5. Paket
+    6. Happy Meal
+    -------------------------
+    7. Checkout
+    
+    input: `;
       }
+      return `
+    **----------- Selamat datang di McD ----------**
+    
+    Home Menu:
 
+    1. Makan
+    2. Minum
+    3. Snacks 
+    4. Desert
+    5. Paket
+    6. Happy Meal
+    
+    input:  `;
    },
    qrCode: function() {
       const qrCode =`
@@ -27,14 +50,13 @@ export const printing = {
 
       console.log(qrCode);
    },
-
    struct: function(itemList, result, order, paymentStatus, paymentMethod, desc){
       console.log(`
                 ---------------------------------------
                               Mc Donalds
                 ---------------------------------------
 
-                               Order No. ${order}
+                              Order No. ${order}
                                             `);
       itemList.forEach((val, index) => {
          console.log(`

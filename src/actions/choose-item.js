@@ -1,9 +1,12 @@
-import { handleHomeMenu, handleHomeMenuText } from "../index.js";
+import { handleHomeMenu } from "../index.js";
+import { printing } from "../utils/print.js";
 import { rl } from "../services/input.js";
 import { init } from "../services/questions.js";
 export let shop = [];
 
-export function eraseCart(){
+const { handleHomeMenuText } = printing;
+
+export function eraseCartList(){
    shop = [];
 }
 
@@ -17,7 +20,8 @@ export function chooseItem(input, text, listItems, handleArr) {
       handleHomeMenu(input);
       return;
    }
-
+   
+   // add item to cart actions
    items.forEach((item, index) => {
       if(currInput === index){
          isFound = true;
