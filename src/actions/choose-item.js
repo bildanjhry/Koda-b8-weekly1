@@ -3,6 +3,10 @@ import { rl } from "../services/input.js";
 import { init } from "../services/questions.js";
 export let shop = [];
 
+export function eraseCart(){
+   shop = [];
+}
+
 export function chooseItem(input, text, listItems, handleArr) {
    const items = handleArr(listItems);
    const currInput = text-1;

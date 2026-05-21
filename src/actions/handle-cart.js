@@ -1,6 +1,7 @@
 import { printing } from "../utils/print-struct.js";
 import { rl } from "../services/input.js";
 import { backHomeQuestion, eraseQuestion } from "../services/questions.js";
+import { eraseCart } from "./choose-item.js";
 
 export let order = 0;
 
@@ -15,8 +16,13 @@ export function handleCart(
    try{
       switch(ans){
       case '1' :
-         shop.forEach((item) => {
-            result += item.price;
+         shop.forEach((val) => {
+            if(val.qty > 1){
+               result += (val.price * val.qty);
+            }
+            else {
+               result += val.price;
+            }
          });
          rl.question("\n\n    Ingin menggunakan:    \n      1. QRIS\n      2. Tunai?\n\n    input: ", function(tra){
             if(tra === "2"){
@@ -24,7 +30,7 @@ export function handleCart(
                order += 1;
                setTimeout(() => {
                   printing.struct(shop, result, order, 'Unpaid', 'Tunai', 'Silahkan berikan ini kepada kasir.' );
-                  shop = [];
+                  eraseCart();
                   setTimeout(() => {
                      const question = `\n\n\n    Ingin melakukan order kembali (Y/N)\n    Input: `;
                      backHomeQuestion(question);
@@ -39,7 +45,7 @@ export function handleCart(
                      console.log(`\n\n\n\n\n
                         **Pembarayan berhasil**            \n\n\n`);
                      printing.struct(shop, result, order, 'Paid', 'QRIS', 'Silahkan tunggu pesanan anda.' );
-                     shop = [];
+                     eraseCart();
                      setTimeout(() => {
                         const question = `\n\n\n    Ingin melakukan order kembali (Y/N)\n    Input: `;
                         backHomeQuestion(question);

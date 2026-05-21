@@ -3,7 +3,12 @@ import moneyFormat from "../utils/money-format.js";
 export function handleCheckout(shop){
    let result = 0;
    shop.forEach((val) => {
-      result += val.price;
+      if(val.qty > 1){
+         result += (val.price * val.qty);
+      }
+      else {
+         result += val.price;
+      }
    });
    console.log(`
                 Pesanan anda:
