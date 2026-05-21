@@ -2,12 +2,12 @@ import { printing } from "../utils/print-struct.js";
 import { rl } from "../services/input.js";
 import { backHomeQuestion, eraseQuestion } from "../services/questions.js";
 
-export let shop = [];
 export let order = 0;
 
 export function handleCart(
    ans, 
    init, 
+   shop,
    handleHomeMenu, 
    handleHomeMenuText
 ) { 
