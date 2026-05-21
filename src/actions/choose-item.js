@@ -1,4 +1,5 @@
-import { handleHomeMenu, handleHomeMenuText, rl } from "../index.js";
+import { handleHomeMenu, handleHomeMenuText, init } from "../index.js";
+import { rl } from "./input.js"
 
 export function chooseItem(input, shop, text, listItems, handleArr) {
    const items = handleArr(listItems);
@@ -109,19 +110,29 @@ export function chooseItem(input, shop, text, listItems, handleArr) {
       // konfirmasi pesanan
       rl.question('\n    Ada lagi? (Y/N): ', function(aswr){
          aswr = aswr.toLowerCase();
-    
-         if(aswr === 'y') { 
-            return handleHomeMenu(input); 
-         } 
-         else if( aswr === 'n') {
-            rl.question(handleHomeMenuText('hasList'), function(ans){
-               handleHomeMenu(ans);
-            });
-         } else {
-            console.log(`\n\n       **Perintah salah\n`);
-            handleHomeMenu(input);
-            return; 
+
+         switch(aswr){
+            case 'y' :
+               return handleHomeMenu(input); 
+            case 'n' :
+               return init('hasList', handleHomeMenuText, handleHomeMenu)
+            default :
+               console.log(`\n\n       **Perintah salah\n`)
+               return handleHomeMenu(input);
          }
+    
+         // if(aswr === 'y') { 
+         //    return handleHomeMenu(input); 
+         // } 
+         // else if( aswr === 'n') {
+         //    rl.question(handleHomeMenuText('hasList'), function(ans){
+         //       handleHomeMenu(ans);
+         //    });
+         // } else {
+         //    console.log(`\n\n       **Perintah salah\n`);
+         //    handleHomeMenu(input);
+         //    return; 
+         // }
       });
    }
 

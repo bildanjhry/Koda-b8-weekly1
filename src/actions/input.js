@@ -5,10 +5,9 @@ export const rl = createInterface({
    output: process.stdout
 });
 
-export function initQuestion(params, question){
+export function question(params, question){
    return new Promise((resolve) => {
-      rl.question("Input: ", function(ans){
-         console.log(ans);
+      rl.question(question(params), function(ans){
          resolve(ans);
       });
    });

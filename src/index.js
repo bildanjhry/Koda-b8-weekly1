@@ -1,16 +1,9 @@
-import { createInterface } from "node:readline";
-
 import { handleArr, listItem } from "./utils/list-item.js";
 import { chooseItem } from "./actions/choose-item.js";
 import { handleCart, shop } from "./actions/handle-cart.js";
-import  { initQuestion, closeQuestion }  from "./actions/input.js";
+import { question, closeQuestion }  from "./actions/input.js";
 import { handleCheckout } from "./actions/handle-checkout.js";
 import { foods, drinks, snacks, paket, happyMeal, desert } from "./datas/index.js";
-
-export const rl = createInterface({
-   input: process.stdin,
-   output: process.stdout
-});
 
 export function handleHomeMenuText(stat){
  
@@ -46,7 +39,6 @@ export function handleHomeMenuText(stat){
 
 // handle menu utama
 export function handleHomeMenu(ans) {
-   try{
       switch(ans){
       case '1' :
          listQuestion('1', foods, shop, listItem, handleArr, chooseItem);
@@ -67,47 +59,39 @@ export function handleHomeMenu(ans) {
          listQuestion('6', happyMeal, shop, listItem, handleArr, chooseItem);
          break;        
       case '7' :
-         rl.question(handleCheckout(shop), function(inpt){
-            handleCart(inpt, init, handleHomeMenu, handleHomeMenuText);
-         });
+         checkoutQuestion(shop, handleCheckout, handleCart)
          break;
       default :
-      { const err = new Error(`\n\n   *Input anda salah \n`);
-         throw err; }
+         const err = ` *Pilihan tidak tersedia \n`
+         return err; 
       }
-   }catch(err){
-      console.log(err);
-      init("", handleHomeMenuText, handleHomeMenu);
-   }
 }
-
-// // pertanyaan awal
-// function init(text){
-//    const newText = (text ? text : "");
-//    return new Promise((resolve, rejected) => {
-//       rl.question(handleHomeMenuText(newText), function(ans){
-//          handleHomeMenu(ans);
-//       });
-//    });
-// }
-
 
 async function listQuestion(
    input,
    item, 
    shop, 
-   question,
+   quest,
    handleArr, 
    actionCallback
 ){
-   const result = await initQuestion(item, question);
-   actionCallback(input, shop, result, item, handleArr);
+   try{
+      const result = await question(item, quest);
+      actionCallback(input, shop, result, item, handleArr);
+
+   } catch(err){
+      console.log(`${err}`)
+      return init("", handleHomeMenuText, handleHomeMenu);
+   }
 }
 
+async function checkoutQuestion(shop, quest, actionCallback) {
+   const result = await question(shop, quest)
+   actionCallback(result, init, handleHomeMenu, handleHomeMenuText);
+}
 
-async function init(params, question, actionCallback){
-   handleHomeMenuText("");
-   const result = await initQuestion(params, question);
+export async function init(params, quest, actionCallback){
+   const result = await question(params, quest);
    actionCallback(result);
 }
 
