@@ -1,10 +1,6 @@
 import { handleHomeMenu } from "../index.js";
-import { printing } from "../utils/print.js";
-import { rl } from "../services/input.js";
-import { init } from "../services/questions.js";
+import { orderConQuestion } from "../services/questions.js";
 export let shop = [];
-
-const { handleHomeMenuText } = printing;
 
 export function eraseCartList(){
    shop = [];
@@ -20,7 +16,7 @@ export function chooseItem(input, text, listItems, handleArr) {
       handleHomeMenu(input);
       return;
    }
-   
+
    // add item to cart actions
    items.forEach((item, index) => {
       if(currInput === index){
@@ -115,26 +111,13 @@ export function chooseItem(input, text, listItems, handleArr) {
       console.log('    --------------------\n');
       console.log(`    Pilihan anda: `);
     
-      // menampilkan makanan/minuman yang didalam keranjang
+      // output choosen items
       shop.map((val) => {
          console.log(`    ${val.name}${val?.size ? ', '+val.size : ''} ${val.qty && val.qty}x`);
       });
     
-      // konfirmasi pesanan
-      rl.question('\n    Ada lagi? (Y/N): ', function(aswr){
-         aswr = aswr.toLowerCase();
-
-         switch(aswr){
-         case 'y' :
-            return handleHomeMenu(input); 
-         case 'n' :
-            return init('hasList', handleHomeMenuText, handleHomeMenu);
-         default :
-            console.log(`\n\n       **Perintah salah\n`);
-            return handleHomeMenu(input);
-         }
-    
-      });
+      // order confirmation
+      orderConQuestion('\n    Ada lagi? (Y/N): ', input);
    }
 
 }

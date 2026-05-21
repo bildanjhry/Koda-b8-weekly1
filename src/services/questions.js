@@ -30,7 +30,8 @@ export async function backHomeQuestion(params){
       closeQuestion();
       break;
    default:
-      return console.log('Input tidak valid');
+      console.log(`\n\n    *Perintah salah`);
+      return backHomeQuestion(params);
    }
 }
 
@@ -42,4 +43,20 @@ export async function init(params, quest, actionCallback){
 export async function eraseQuestion(params, actionCallback){
    const result = await question(params);
    actionCallback(result);
+}
+
+export async function orderConQuestion(params, input) {
+   const result = await question(params, false);
+   const aswr = result.toLowerCase();
+
+   switch(aswr){
+   case 'y' :
+      return handleHomeMenu(input); 
+   case 'n' :
+      return init('hasList', handleHomeMenuText, handleHomeMenu);
+   default :
+      console.log(`\n\n       **Perintah salah\n`);
+      return orderConQuestion(params, input);
+   }
+    
 }

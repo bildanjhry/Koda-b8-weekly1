@@ -15,7 +15,7 @@ export const printing = {
     -------------------------
     7. Checkout
     
-    input: `;
+    Input: `;
       }
       return `
     **----------- Selamat datang di McD ----------**
@@ -29,7 +29,7 @@ export const printing = {
     5. Paket
     6. Happy Meal
     
-    input:  `;
+    Input:  `;
    },
    qrCode: function() {
       const qrCode =`

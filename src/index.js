@@ -31,6 +31,9 @@ export function handleHomeMenu(ans) {
          listQuestion('6', happyMeal, listItem, handleArr, chooseItem);
          break;        
       case '7' :
+         if( shop.length < 1){
+            throw new Error(true);
+         }
          checkoutQuestion(shop, handleCheckout, handleCart);
          break;
       default :
@@ -38,8 +41,13 @@ export function handleHomeMenu(ans) {
          throw err; }
       }
    } catch(err) {
+
       console.log(`\n\n    *Pilihan tidak tersedia\n`);
-      return init("", handleHomeMenuText, handleHomeMenu);
+      if(shop.length > 0){
+         return init("hasList", handleHomeMenuText, handleHomeMenu);
+      } else {
+         return init("", handleHomeMenuText, handleHomeMenu);
+      }
    };
 }
 
