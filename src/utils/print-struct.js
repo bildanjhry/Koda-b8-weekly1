@@ -31,6 +31,8 @@ export const printing = {
    struct: function(itemList, result, order, paymentStatus, paymentMethod, desc){
       console.log(`
                 ---------------------------------------
+                              Mc Donalds
+                ---------------------------------------
 
                                Order No. ${order}
                                             `);
@@ -52,7 +54,7 @@ export const printing = {
 
                               Terimakasih.
                 ---------------------------------------
-                   ||| |||| ||||| || |||| |||| |||| |
+                   ||| |||| ||||| || |||| |||| |||||
                 ---------------------------------------\n\n`);
 
    },

@@ -4,14 +4,13 @@ import { handleHomeMenu, handleHomeMenuText } from "../index.js";
 export async function listQuestion(
    input,
    item, 
-   shop, 
    quest,
    handleArr, 
    actionCallback
 ){
    try{
       const result = await question(item, quest);
-      actionCallback(input, shop, result, item, handleArr);
+      actionCallback(input, result, item, handleArr);
 
    } catch(err){
       console.log(`${err}`);
@@ -21,7 +20,7 @@ export async function listQuestion(
 
 export async function checkoutQuestion(shop, quest, actionCallback) {
    const result = await question(shop, quest);
-   actionCallback(result, init, handleHomeMenu, handleHomeMenuText);
+   actionCallback(result, init, shop, handleHomeMenu, handleHomeMenuText);
 }
 
 export async function backHomeQuestion(params){
