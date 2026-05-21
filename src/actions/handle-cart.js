@@ -1,6 +1,6 @@
 import { printing } from "../utils/print-struct.js";
 import { rl } from "../services/input.js";
-import { backHomeQuestion, init } from "../index.js";
+import { backHomeQuestion, eraseQuestion } from "../services/questions.js";
 
 export let shop = [];
 export let order = 0;
@@ -25,11 +25,13 @@ export function handleCart(
                setTimeout(() => {
                   printing.struct(shop, result, order, 'Unpaid', 'Tunai', 'Silahkan berikan ini kepada kasir.' );
                   shop = [];
-                  const question = `    Ingin melakukan order kembali (Y/N)\n    Input: `;
-                  backHomeQuestion(question);
+                  setTimeout(() => {
+                     const question = `\n\n\n    Ingin melakukan order kembali (Y/N)\n    Input: `;
+                     backHomeQuestion(question);
+                  },1000);
                },1500);
             } else if(tra === "1"){
-               console.log(`\n                  Proses...`);
+               console.log(`\n                   Proses...`);
                order += 1;
                setTimeout(() => {
                   printing.qrCode();
@@ -52,19 +54,24 @@ export function handleCart(
             handleHomeMenu(ans);
          });
       case '3' :
-         return rl.question("\n\n    Silahkan pilih item: ", function(ans){
-            const idx = parseInt(ans)-1;
-            shop.map((item, index) => {
-               if(index === idx){
-                  if(item.qty > 1){
-                     item.qty -= 1;
-                  } else {
-                     shop.splice(idx, 1);
+         { const quest = "\n\n    Silahkan pilih item: ";
+            const res = eraseQuestion(quest, eraseCart);
+            function eraseCart(res) {
+               const idx = parseInt(res)-1;
+               shop.map((item, index) => {
+                  if(index === idx){
+                     if(item.qty > 1){
+                        item.qty -= 1;
+                     } else {
+                        shop.splice(idx, 1);
+                     }
                   }
-               }
-            });
-            handleHomeMenu('7');
-         });
+               });
+               handleHomeMenu('7');
+            } 
+            eraseCart(res);
+         }
+         break;
       default: 
       { const err = new Error(`\n\n    *Perintah Salah\n\n`);
          throw err;}

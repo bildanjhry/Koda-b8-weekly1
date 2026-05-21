@@ -42,3 +42,8 @@ export async function init(params, quest, actionCallback){
    const result = await question(params, quest);
    actionCallback(result);
 }
+
+export async function eraseQuestion(params, shop, actionCallback){
+   const result = await question(params);
+   actionCallback(result);
+}

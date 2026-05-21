@@ -1,5 +1,6 @@
-import { handleHomeMenu, handleHomeMenuText, init } from "../index.js";
+import { handleHomeMenu, handleHomeMenuText } from "../index.js";
 import { rl } from "../services/input.js";
+import { init } from "../services/questions.js";
 
 export function chooseItem(input, shop, text, listItems, handleArr) {
    const items = handleArr(listItems);

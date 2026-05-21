@@ -1,9 +1,9 @@
 import { handleArr, listItem } from "./utils/list-item.js";
 import { chooseItem } from "./actions/choose-item.js";
 import { handleCart, shop } from "./actions/handle-cart.js";
-import { question, closeQuestion }  from "./services/input.js";
 import { handleCheckout } from "./actions/handle-checkout.js";
 import { foods, drinks, snacks, paket, happyMeal, desert } from "./datas/index.js";
+import { init, checkoutQuestion, listQuestion } from "./services/questions.js";
 
 export function handleHomeMenuText(stat){
  
@@ -66,46 +66,5 @@ export function handleHomeMenu(ans) {
    }
 }
 
-async function listQuestion(
-   input,
-   item, 
-   shop, 
-   quest,
-   handleArr, 
-   actionCallback
-){
-   try{
-      const result = await question(item, quest);
-      actionCallback(input, shop, result, item, handleArr);
-
-   } catch(err){
-      console.log(`${err}`);
-      return init("", handleHomeMenuText, handleHomeMenu);
-   }
-}
-
-async function checkoutQuestion(shop, quest, actionCallback) {
-   const result = await question(shop, quest);
-   actionCallback(result, init, handleHomeMenu, handleHomeMenuText);
-}
-
-export async function backHomeQuestion(params){
-   const result = await question(params, false);
-   switch(result){
-   case 'y':
-      init("", handleHomeMenuText, handleHomeMenu);
-      break;
-   case 'n':
-      closeQuestion();
-      break;
-   default:
-      return console.log('Input tidak valid');
-   }
-}
-
-export async function init(params, quest, actionCallback){
-   const result = await question(params, quest);
-   actionCallback(result);
-}
 
 init("", handleHomeMenuText, handleHomeMenu);
