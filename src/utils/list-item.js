@@ -1,3 +1,5 @@
+import moneyFormat from "./money-format.js";
+
 // handle array list
 export function handleArr(listItems){
    const newOne = listItems;
@@ -33,7 +35,7 @@ export function listItem (listItems){
     
       return`
         ${no}. ${value.name}${value.size ? ", "+ value.size : ''}
-        Harga: Rp${value.price},-\n`;
+        Harga: Rp${moneyFormat(value.price)[0]},-\n`;
    }).join("");
    return format+ `\n    input: `;
 }

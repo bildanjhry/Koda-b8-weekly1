@@ -1,3 +1,5 @@
+import moneyFormat from "./money-format.js";
+
 export const printing = {
 
    product: function(value){
@@ -36,10 +38,10 @@ export const printing = {
          console.log(`
                 ${index+1}. ${val.name}${val?.size ? ', '+val.size : ''}
                    ${val.qty}X
-                   Rp${val.price},-`);
+                   Rp${moneyFormat(val.price)[0]},-`);
       });
       console.log(`
-                                      Total: Rp${result},-
+                                      Total: Rp${moneyFormat(result)[0]},-
                 ---------------------------------------
                 Status: ${paymentStatus}
                 Payment: ${paymentMethod}
