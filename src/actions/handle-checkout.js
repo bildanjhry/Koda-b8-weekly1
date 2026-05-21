@@ -18,5 +18,5 @@ export function handleCheckout(shop){
                 ------------------------------------------
                 1.Bayar         2.kembali          3.Hapus
                 
-                input: `;
+    Input: `;
 }

@@ -8,10 +8,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node work.js",
+    "start": "node src/index.js",
     "dev": "node src/index.js",
-    "lint": "eslint src/ src/datas/*.js src/utils/*.js src/actions/*.js ",
-    "lint:fix": "eslint src/ src/datas/*.js src/utils/*.js src/actions/*.js  --fix"
+    "lint": "eslint src/ src/datas/*.js src/utils/*.js src/services/*.js src/actions/*.js ",
+    "lint:fix": "eslint src/ src/datas/*.js src/utils/*.js src/services/*.js src/actions/*.js  --fix"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

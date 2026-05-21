@@ -1,5 +1,6 @@
 import { printing } from "../utils/print-struct.js";
-import { rl } from "./input.js"
+import { rl } from "../services/input.js";
+import { backHomeQuestion, init } from "../index.js";
 
 export let shop = [];
 export let order = 0;
@@ -17,35 +18,31 @@ export function handleCart(
          shop.forEach((item) => {
             result += item.price;
          });
-         rl.question("\n\n    Ingin menggunakan 1. QRIS atau 2. Tunai?\n\n    input: ", function(tra){
+         rl.question("\n\n    Ingin menggunakan:    \n      1. QRIS\n      2. Tunai?\n\n    input: ", function(tra){
             if(tra === "2"){
-               console.log(`\n                      Proses...\n\n\n\n`);
+               console.log(`\n                       Proses...\n\n\n\n`);
                order += 1;
                setTimeout(() => {
                   printing.struct(shop, result, order, 'Unpaid', 'Tunai', 'Silahkan berikan ini kepada kasir.' );
                   shop = [];
-                  setTimeout(() => {
-                     rl.question(handleHomeMenuText(""), function(ans){
-                        handleHomeMenu(ans);
-                     });
-                  },7000);
+                  const question = `    Ingin melakukan order kembali (Y/N)\n    Input: `;
+                  backHomeQuestion(question);
                },1500);
             } else if(tra === "1"){
-               console.log(`\n                       Proses...`);
+               console.log(`\n                  Proses...`);
                order += 1;
                setTimeout(() => {
                   printing.qrCode();
                   setTimeout(() => {
-                     console.log(`\n\n\n\n\n\n\n\n\n
-            ----------------- Pembarayan berhasil -----------------\n\n`);
+                     console.log(`\n\n\n\n\n
+                        **Pembarayan berhasil**            \n\n\n`);
                      printing.struct(shop, result, order, 'Paid', 'QRIS', 'Silahkan tunggu pesanan anda.' );
-                  },2500);
-                  setTimeout(() => {
                      shop = [];
-                     rl.question(handleHomeMenuText(""), function(ans){
-                        handleHomeMenu(ans);
-                     });
-                  },6500);
+                     setTimeout(() => {
+                        const question = `\n\n\n    Ingin melakukan order kembali (Y/N)\n    Input: `;
+                        backHomeQuestion(question);
+                     },1000);
+                  },2500);
                },1500);
             }
          });

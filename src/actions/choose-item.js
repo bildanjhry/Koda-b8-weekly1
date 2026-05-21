@@ -1,10 +1,10 @@
 import { handleHomeMenu, handleHomeMenuText, init } from "../index.js";
-import { rl } from "./input.js"
+import { rl } from "../services/input.js";
 
 export function chooseItem(input, shop, text, listItems, handleArr) {
    const items = handleArr(listItems);
-   let isFound = false;
    const currInput = text-1;
+   let isFound = false;
 
    if(text > items.length || isNaN(currInput)){
       console.log('\n\n     Pilihan tidak tersedia.');
@@ -48,28 +48,19 @@ export function chooseItem(input, shop, text, listItems, handleArr) {
             }
          } else {
             const find = shop.find(val => val.id === item.id);
-            shop.forEach((shopVal) => {
-               if(item.id === shopVal.id){
-                  if(item.name === shopVal.name && !item.size && !shopVal.size){
-                     return shopVal.qty += 1;
-                  }
-                  else if((item?.size && shopVal?.size) && item?.size === shopVal?.size){
-                     return shopVal.qty += 1;
-                  }
-               } 
-            });
-
             if(!find){
                if(item?.size){
-                  shop.push({
-                     id:item.id,
-                     cat:item.cat,
-                     size:item.size,
-                     name:item.name,
-                     price:item.price,
-                     qty: 1
-                  }); 
-               } if(item?.menu){
+                  shop.push(
+                     {
+                        id:item.id,
+                        cat:item.cat,
+                        size:item.size,
+                        name:item.name,
+                        price:item.price,
+                        qty: 1
+                     });
+               }
+               else if(item?.menu){
                   shop.push({
                      id:item.id,
                      cat:item.cat,
@@ -80,17 +71,29 @@ export function chooseItem(input, shop, text, listItems, handleArr) {
                      qty: 1
                   });
                } 
-               else if(item.menu === "undefined" || item.size === "undefined") {
-                  console.log(item?.size);
-                  console.log('masuk sini');
-                  shop.push({
-                     id:item.id,
-                     cat:item.cat,
-                     name:item.name,
-                     price:item.price,
-                     qty: 1
-                  }); 
+               else if(item.menu === undefined || item.size === undefined) {
+                  shop = [ 
+                     ...shop,
+                     {
+                        id:item.id,
+                        cat:item.cat,
+                        name:item.name,
+                        price:item.price,
+                        qty: 1
+                     }]; 
                }
+            }
+            else if(find) {
+               shop.forEach((shopVal) => {
+                  if(item.id === shopVal.id){
+                     if(item.name === shopVal.name && !item.size && !shopVal.size){
+                        return shopVal.qty += 1;
+                     }
+                     else if((item?.size && shopVal?.size) && item?.size === shopVal?.size){
+                        return shopVal.qty += 1;
+                     }
+                  } 
+               });
 
             }
          }
@@ -112,27 +115,15 @@ export function chooseItem(input, shop, text, listItems, handleArr) {
          aswr = aswr.toLowerCase();
 
          switch(aswr){
-            case 'y' :
-               return handleHomeMenu(input); 
-            case 'n' :
-               return init('hasList', handleHomeMenuText, handleHomeMenu)
-            default :
-               console.log(`\n\n       **Perintah salah\n`)
-               return handleHomeMenu(input);
+         case 'y' :
+            return handleHomeMenu(input); 
+         case 'n' :
+            return init('hasList', handleHomeMenuText, handleHomeMenu);
+         default :
+            console.log(`\n\n       **Perintah salah\n`);
+            return handleHomeMenu(input);
          }
     
-         // if(aswr === 'y') { 
-         //    return handleHomeMenu(input); 
-         // } 
-         // else if( aswr === 'n') {
-         //    rl.question(handleHomeMenuText('hasList'), function(ans){
-         //       handleHomeMenu(ans);
-         //    });
-         // } else {
-         //    console.log(`\n\n       **Perintah salah\n`);
-         //    handleHomeMenu(input);
-         //    return; 
-         // }
       });
    }
 

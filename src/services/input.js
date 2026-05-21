@@ -7,9 +7,15 @@ export const rl = createInterface({
 
 export function question(params, question){
    return new Promise((resolve) => {
-      rl.question(question(params), function(ans){
-         resolve(ans);
-      });
+      if(!question){
+         rl.question(params, function(ans){
+            resolve(ans);
+         });
+      } else {
+         rl.question(question(params), function(ans){
+            resolve(ans);
+         });
+      }
    });
 }
 
