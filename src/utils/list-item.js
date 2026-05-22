@@ -26,7 +26,7 @@ export function handleArr(listItems){
    return [...newFoods, ...moreList];
 }
 
-// menampilkan list item
+//displaying item list
 export function listItem (listItems){
    const listFoods = handleArr(listItems);
    const format = listFoods.map((value, index) => {
