@@ -37,7 +37,7 @@ export function listItem (listItems){
         ${no}. ${value.name}${value.size ? ", "+ value.size : ''}
         Harga: Rp${moneyFormat(value.price)[0]},-\n`;
    }).join("");
-   return format+ `\n    input: `;
+   return format+ `\n    Input: `;
 }
 
 

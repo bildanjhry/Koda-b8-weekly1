@@ -7,6 +7,7 @@ export const rl = createInterface({
 
 export function question(params, question){
    return new Promise((resolve) => {
+      
       if(!question){
          rl.question(params, function(ans){
             resolve(ans);

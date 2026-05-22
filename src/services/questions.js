@@ -1,5 +1,8 @@
 import { question, closeQuestion } from "./input.js";
-import { handleHomeMenu, handleHomeMenuText } from "../index.js";
+import { handleHomeMenu } from "../index.js";
+import { printing } from "../utils/print.js";
+
+const { handleHomeMenuText } = printing;
 
 export async function listQuestion(
    input,
@@ -8,14 +11,8 @@ export async function listQuestion(
    handleArr, 
    actionCallback
 ){
-   try{
-      const result = await question(item, quest);
-      actionCallback(input, result, item, handleArr);
-
-   } catch(err){
-      console.log(`${err}`);
-      return init("", handleHomeMenuText, handleHomeMenu);
-   }
+   const result = await question(item, quest);
+   actionCallback(input, result, item, handleArr);
 }
 
 export async function checkoutQuestion(shop, quest, actionCallback) {
@@ -33,7 +30,8 @@ export async function backHomeQuestion(params){
       closeQuestion();
       break;
    default:
-      return console.log('Input tidak valid');
+      console.log(`\n\n    *Perintah salah`);
+      return backHomeQuestion(params);
    }
 }
 
@@ -42,7 +40,23 @@ export async function init(params, quest, actionCallback){
    actionCallback(result);
 }
 
-export async function eraseQuestion(params, shop, actionCallback){
+export async function eraseQuestion(params, actionCallback){
    const result = await question(params);
    actionCallback(result);
+}
+
+export async function orderConQuestion(params, input) {
+   const result = await question(params, false);
+   const aswr = result.toLowerCase();
+
+   switch(aswr){
+   case 'y' :
+      return handleHomeMenu(input); 
+   case 'n' :
+      return init('hasList', handleHomeMenuText, handleHomeMenu);
+   default :
+      console.log(`\n\n       **Perintah salah\n`);
+      return orderConQuestion(params, input);
+   }
+    
 }
