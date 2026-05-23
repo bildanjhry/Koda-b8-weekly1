@@ -11,73 +11,34 @@ export function chooseItem(input, text, listItems, handleArr) {
    const currInput = text-1;
    let isFound = false;
 
-   if(text > items.length || isNaN(currInput)){
-      console.log('\n\n     Pilihan tidak tersedia.');
-      handleHomeMenu(input);
-      return;
-   }
-
-   // add item to cart actions
-   items.forEach((item, index) => {
-      if(currInput === index){
-         isFound = true;
-         if(shop.length < 1){
-            if(item?.menu){
+   try {
+      if(text > items.length || isNaN(currInput)){
+         throw new Error(`'\n\n     *Pilihan tidak tersedia.'`);
+      }
+   
+      // add item to cart actions
+      items.forEach((item, index) => {
+         if(currInput === index){
+            isFound = true;
+            if(shop.length < 1){
                shop.push({
                   id:item.id,
                   cat:item.cat,
                   name:item.name,
-                  menu:item.menu,
                   price:item.price,
                   isPromo:item.isPromo,
                   qty: 1
                });
-            }
-            if(item?.size){
-               shop.push({
-                  id:item.id,
-                  cat:item.cat,
-                  name:item.name,
-                  price:item.price,
-                  size: item.size,
-                  qty: 1
-               });
-            }
-            else if(!item.menu) {
-               shop.push({
-                  id:item.id,
-                  cat:item.cat,
-                  name:item.name,
-                  price:item.price,
-                  qty: 1
-               });
-            }
-         } else {
-            const find = shop.find(val => val.id === item.id);
-            if(!find){
-               if(item?.size){
-                  shop.push(
-                     {
-                        id:item.id,
-                        cat:item.cat,
-                        size:item.size,
-                        name:item.name,
-                        price:item.price,
-                        qty: 1
-                     });
+               if(item.menu !== undefined){
+                  shop[0].menu = item.menu;
                }
-               else if(item?.menu){
-                  shop.push({
-                     id:item.id,
-                     cat:item.cat,
-                     name:item.name,
-                     menu:item.menu,
-                     price:item.price,
-                     isPromo:item.isPromo,
-                     qty: 1
-                  });
-               } 
-               else if(item.menu === undefined || item.size === undefined) {
+               if(item.size !== undefined){
+                  shop[0].size = item.size;
+               }
+            } else {
+               const find = shop.find((val) => val.id === item.id);
+   
+               if(!find){
                   shop = [ 
                      ...shop,
                      {
@@ -87,37 +48,46 @@ export function chooseItem(input, text, listItems, handleArr) {
                         price:item.price,
                         qty: 1
                      }]; 
+                  const lastIndex = shop.length-1;
+                  if(item.size !== undefined){
+                     shop[lastIndex].size = item.size;
+                  }
+                  if(item.menu !== undefined){
+                     shop[lastIndex].menu = item.menu;
+                  } 
+               }
+               else if(find) {
+                  shop.forEach((shopVal) => {
+                     if(item.id === shopVal.id){
+                        if(item.name === shopVal.name && !item.size && !shopVal.size){
+                           return shopVal.qty += 1;
+                        }
+                        else if((item?.size && shopVal?.size) && item?.size === shopVal?.size){
+                           return shopVal.qty += 1;
+                        }
+                     } 
+                  });
                }
             }
-            else if(find) {
-               shop.forEach((shopVal) => {
-                  if(item.id === shopVal.id){
-                     if(item.name === shopVal.name && !item.size && !shopVal.size){
-                        return shopVal.qty += 1;
-                     }
-                     else if((item?.size && shopVal?.size) && item?.size === shopVal?.size){
-                        return shopVal.qty += 1;
-                     }
-                  } 
-               });
-
-            }
-         }
-
-      } 
-   });
-
-   if(isFound){
-      console.log('    --------------------\n');
-      console.log(`    Pilihan anda: `);
-    
-      // output choosen items
-      shop.map((val) => {
-         console.log(`    ${val.name}${val?.size ? ', '+val.size : ''} ${val.qty && val.qty}x`);
+   
+         } 
       });
-    
-      // order confirmation
-      orderConQuestion('\n    Ada lagi? (Y/N): ', input);
-   }
+   
+      if(isFound){
+         console.log('    --------------------\n');
+         console.log(`    Pilihan anda: `);
+       
+         // output choosen items
+         shop.map((val) => {
+            console.log(`    ${val.name}${val?.size ? ', '+val.size : ''} ${val.qty && val.qty}x`);
+         });
+       
+         // order confirmation
+         orderConQuestion('\n    Ada lagi? (Y/N): ', input);
+      }
 
+   } catch(err) {
+      console.log(err.message);
+      return handleHomeMenu(input);
+   }
 }

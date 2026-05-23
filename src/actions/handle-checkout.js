@@ -1,16 +1,9 @@
 import moneyFormat from "../utils/money-format.js";
+import sumTotal from "../utils/sum-total.js";
 
 export function handleCheckout(shop){
 
-   let result = 0;
-   shop?.forEach((val) => {
-      if(val.qty > 1){
-         result += (val.price * val.qty);
-      }
-      else {
-         result += val.price;
-      }
-   });
+   const result = sumTotal(shop);
    console.log(`
                 Pesanan anda:
                 ------------------------------------------`);
