@@ -2,9 +2,9 @@ import moneyFormat from "./money-format.js";
 import sumTotal from "./sum-total.js";
 
 export const printing = {
-   handleHomeMenuText: function(stat){
-      if(stat === 'hasList'){
-         return `
+  handleHomeMenuText: function(stat){
+    if(stat === 'hasList'){
+      return `
     Home Menu:
 
     1. Makan
@@ -17,8 +17,8 @@ export const printing = {
     7. Checkout
     
     Input: `;
-      }
-      return `
+    }
+    return `
     **----------- Selamat datang di McD ----------**
     
     Home Menu:
@@ -31,9 +31,9 @@ export const printing = {
     6. Happy Meal
     
     Input:  `;
-   },
-   qrCode: function() {
-      const qrCode =`
+  },
+  qrCode: function() {
+    const qrCode =`
                    █████████████████████████████████
                    ████ ▄▄▄▄▄ ██ ▄▀█▀▄ ██ ▄▄▄▄▄ ████
                    ████ █   █ ██ █▄█▄█ ██ █   █ ████
@@ -49,23 +49,23 @@ export const printing = {
                    ████▄▄▄▄▄▄▄██▄▄███▄▄██▄▄▄▄▄██████
                    █████████████████████████████████`;
 
-      console.log(qrCode);
-   },
-   struct: function(itemList, result, order, paymentStatus, paymentMethod, desc){
-      console.log(`
+    console.log(qrCode);
+  },
+  struct: function(itemList, result, order, paymentStatus, paymentMethod, desc){
+    console.log(`
                 ---------------------------------------
                               Mc Donalds
                 ---------------------------------------
 
                               Order No. ${order}
                                             `);
-      itemList.forEach((val, index) => {
-         console.log(`
+    itemList.forEach((val, index) => {
+      console.log(`
                 ${index+1}. ${val.name}${val?.size ? ', '+val.size : ''}
                    ${val.qty}X
                    Rp${moneyFormat(val.price)[0]},-`);
-      });
-      console.log(`
+    });
+    console.log(`
                                       Total: Rp${moneyFormat(result)[0]},-
                 ---------------------------------------
                 Status: ${paymentStatus}
@@ -80,32 +80,32 @@ export const printing = {
                    ||| |||| ||||| || |||| |||| |||||
                 ---------------------------------------\n\n`);
 
-   },
-   checkout: function(shop){
-      const total = sumTotal(shop);
-      console.log(`
+  },
+  checkout: function(shop){
+    const total = sumTotal(shop);
+    console.log(`
                    Pesanan anda:
                    ------------------------------------------`);
-      shop?.forEach((val, index) => {
-         console.log(`
+    shop?.forEach((val, index) => {
+      console.log(`
                    ${index+1}. ${val.name}${val?.size ? ', '+val.size : ''}
                       ${val.qty}X
                       Rp${moneyFormat(val.price)[0]},-\n`);
-      });
-      return `
+    });
+    return `
                                             Total: Rp${moneyFormat(total)[0]},-
                    ------------------------------------------
                    1. Bayar        2. Kembali        3. Hapus
                    
        Input: `;
-   },
-   choosenItemList: function(shop){
-      console.log('    --------------------\n');
-      console.log(`    Pilihan anda: `);
+  },
+  choosenItemList: function(shop){
+    console.log('    --------------------\n');
+    console.log(`    Pilihan anda: `);
              
-      // output choosen items
-      shop.map((val) => {
-         console.log(`    ${val.name}${val?.size ? ', '+val.size : ''} ${val.qty && val.qty}x`);
-      });
-   }
+    // output choosen items
+    shop.map((val) => {
+      console.log(`    ${val.name}${val?.size ? ', '+val.size : ''} ${val.qty && val.qty}x`);
+    });
+  }
 };
