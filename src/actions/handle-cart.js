@@ -1,6 +1,19 @@
 import {  checkoutQuestion, eraseQuestion, transactionQuestion } from "../services/questions.js";
 import { handleCheckout } from "./handle-checkout.js";
 
+function sumTotal(cart){
+   let result = 0;
+   cart.forEach((val) => {
+      if(val.qty > 1){
+         result += (val.price * val.qty);
+      }
+      else {
+         result += val.price;
+      }
+   });
+   return result;
+}
+
 export function handleCart(
    ans, 
    init, 
@@ -8,22 +21,16 @@ export function handleCart(
    handleHomeMenu, 
    handleHomeMenuText
 ) { 
-   let result = 0;
+   
    const orderQuestion = `\n\n\n    Ingin melakukan order kembali (Y/N)\n    Input: `;
    const tranQuestion = "\n\n    Ingin menggunakan:    \n      1. QRIS\n      2. Tunai\n\n    Input: ";
+   
    try{
       switch(ans){
       case '1' :
-         shop.forEach((val) => {
-            if(val.qty > 1){
-               result += (val.price * val.qty);
-            }
-            else {
-               result += val.price;
-            }
-         });
-         transactionQuestion(tranQuestion, orderQuestion, shop, result);
-         break; 
+      { const total = sumTotal(shop);
+         transactionQuestion(tranQuestion, orderQuestion, shop, total);
+         break; } 
       case '2' :
          init("hasList", handleHomeMenuText, handleHomeMenu);
          break;
@@ -41,20 +48,28 @@ export function handleCart(
                   }
                });
                if(shop.length < 1){
-                  console.log(`\n\n    *Pesanan kosong\n`);
-                  return init("", handleHomeMenuText, handleHomeMenu);
+                  throw new Error({
+                     message: `\n\n    *Pesanan kosong\n`,
+                     problem:'cart is empty',
+                  });
                } else {
                   handleHomeMenu('7');
                }
             } 
+            // call fucntion to delete item in cart
             eraseQuestion(quest, eraseCart);
          }
          break;
       default: 
-         throw new Error();
+         throw new Error(`\n\n    *Perintah Salah\n\n`);
       };
-   } catch(err) {
-      console.log(`\n\n    *Perintah Salah\n\n`);
-      return checkoutQuestion(shop, handleCheckout, handleCart);
+   } catch({message, problem}) {
+      console.log(message);
+
+      if(problem === 'cart is empty'){
+         init("", handleHomeMenuText, handleHomeMenu);
+      } else{
+         checkoutQuestion(shop, handleCheckout, handleCart);
+      }
    }
 }

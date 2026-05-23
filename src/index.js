@@ -31,22 +31,21 @@ export function handleHomeMenu(ans) {
          listQuestion('6', happyMeal, listItem, handleArr, chooseItem);
          break;        
       case '7' :
-         if( shop.length < 1){
-            throw new Error(true);
+         if(shop.length < 1){
+            throw new Error(`\n\n    *Pilihan tidak tersedia\n`);
          }
          checkoutQuestion(shop, handleCheckout, handleCart);
          break;
       default :
-      { const err = new Error();
-         throw err; }
+         throw new Error(`\n\n    *Pilihan tidak tersedia\n`); 
       }
    } catch(err) {
-
-      console.log(`\n\n    *Pilihan tidak tersedia\n`);
+      console.log(err.message);
+      
       if(shop.length > 0){
-         return init("hasList", handleHomeMenuText, handleHomeMenu);
+         init("hasList", handleHomeMenuText, handleHomeMenu);
       } else {
-         return init("", handleHomeMenuText, handleHomeMenu);
+         init("", handleHomeMenuText, handleHomeMenu);
       }
    };
 }

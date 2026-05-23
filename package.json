@@ -7,7 +7,7 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "vitest",
     "start": "node src/index.js",
     "dev": "node src/index.js",
     "lint": "eslint src/ src/datas/*.js src/utils/*.js src/services/*.js src/actions/*.js ",
@@ -16,6 +16,7 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "eslint": "^10.4.0",
-    "globals": "^17.6.0"
+    "globals": "^17.6.0",
+    "vitest": "^4.1.7"
   }
 }

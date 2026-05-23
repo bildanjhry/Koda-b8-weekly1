@@ -3,7 +3,7 @@ import moneyFormat from "../utils/money-format.js";
 export function handleCheckout(shop){
 
    let result = 0;
-   shop.forEach((val) => {
+   shop?.forEach((val) => {
       if(val.qty > 1){
          result += (val.price * val.qty);
       }
@@ -14,7 +14,7 @@ export function handleCheckout(shop){
    console.log(`
                 Pesanan anda:
                 ------------------------------------------`);
-   shop.forEach((val, index) => {
+   shop?.forEach((val, index) => {
       console.log(`
                 ${index+1}. ${val.name}${val?.size ? ', '+val.size : ''}
                    ${val.qty}X
