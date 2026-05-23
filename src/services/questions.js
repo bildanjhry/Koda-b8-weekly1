@@ -5,17 +5,17 @@ import { printing } from "../utils/print.js";
 const { handleHomeMenuText, checkout } = printing;
 
 // 1. --> init home menu
-export async function init(params, quest, actionCallback){
+export async function init(params, quest, actionCallback, retry = init){
    try{
       const result = await question(params, quest);
       actionCallback(result);
    } catch(err){
       console.log(err.message);
-
+      // retry question
       if(shop.length > 0){
-         return init("hasList", handleHomeMenuText, handleHomeMenu);
+         return retry("hasList", handleHomeMenuText, handleHomeMenu);
       } else {
-         return init("", handleHomeMenuText, handleHomeMenu);
+         return retry("", handleHomeMenuText, handleHomeMenu);
       }
    }
 }
@@ -46,7 +46,7 @@ export async function orderConfirmQuestion(params, input, actionCallback) {
       actionCallback(aswr, input, params, init);
    } catch(err){
       console.log(err.message);
-      return orderConfirmQuestion(params, input, actionCallback);
+      return orderConfirmQuestion(params, input, actionCallback); //retry question
    }
 }
 
@@ -92,12 +92,12 @@ export async function backHomeQuestion(params, actionCallback){
       actionCallback(result, params, init, handleHomeMenu, handleHomeMenuText);
    } catch(err){
       console.log(err.message);
-      return backHomeQuestion(params, actionCallback);
+      return backHomeQuestion(params, actionCallback); // retry question
    }
 }
 
 // confirm which item to be deleted in the cart
 export async function eraseQuestion(params, actionCallback){
    const result = await question(params);
-   actionCallback(result);
+   return actionCallback(result);
 }
