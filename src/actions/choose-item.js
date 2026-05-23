@@ -16,7 +16,7 @@ function confirmOrder(result, input, params, init){
    case 'n' :
       return init('hasList', handleHomeMenuText, handleHomeMenu);
    default :
-      throw new Error(`\n\n   *Perintah salah\n`);
+      throw new Error(`\n\n    *Perintah salah\n`);
    }
 }
 

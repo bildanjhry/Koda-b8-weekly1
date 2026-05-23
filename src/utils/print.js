@@ -1,4 +1,5 @@
 import moneyFormat from "./money-format.js";
+import sumTotal from "./sum-total.js";
 
 export const printing = {
    handleHomeMenuText: function(stat){
@@ -80,8 +81,8 @@ export const printing = {
                 ---------------------------------------\n\n`);
 
    },
-   checkout: function(shop, result){
-   
+   checkout: function(shop){
+      const total = sumTotal(shop);
       console.log(`
                    Pesanan anda:
                    ------------------------------------------`);
@@ -92,7 +93,7 @@ export const printing = {
                       Rp${moneyFormat(val.price)[0]},-\n`);
       });
       return `
-                                            Total: Rp${moneyFormat(result)[0]},-
+                                            Total: Rp${moneyFormat(total)[0]},-
                    ------------------------------------------
                    1. Bayar        2. Kembali        3. Hapus
                    
