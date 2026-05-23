@@ -80,4 +80,31 @@ export const printing = {
                 ---------------------------------------\n\n`);
 
    },
+   checkout: function(shop, result){
+   
+      console.log(`
+                   Pesanan anda:
+                   ------------------------------------------`);
+      shop?.forEach((val, index) => {
+         console.log(`
+                   ${index+1}. ${val.name}${val?.size ? ', '+val.size : ''}
+                      ${val.qty}X
+                      Rp${moneyFormat(val.price)[0]},-\n`);
+      });
+      return `
+                                            Total: Rp${moneyFormat(result)[0]},-
+                   ------------------------------------------
+                   1. Bayar        2. Kembali        3. Hapus
+                   
+       Input: `;
+   },
+   choosenItemList: function(shop){
+      console.log('    --------------------\n');
+      console.log(`    Pilihan anda: `);
+             
+      // output choosen items
+      shop.map((val) => {
+         console.log(`    ${val.name}${val?.size ? ', '+val.size : ''} ${val.qty && val.qty}x`);
+      });
+   }
 };

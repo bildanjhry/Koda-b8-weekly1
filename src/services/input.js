@@ -7,8 +7,7 @@ export const rl = createInterface({
 
 export function question(params, question){
    return new Promise((resolve) => {
-      
-      if(!question){
+      if(!question){ // some question are in callback function
          rl.question(params, function(ans){
             resolve(ans);
          });

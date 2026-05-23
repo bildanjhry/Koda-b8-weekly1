@@ -1,6 +1,6 @@
 import moneyFormat from "./money-format.js";
 
-// handle array list
+// merge arrays from different format
 export function handleArr(listItems){
    const newOne = listItems;
    const moreList = [];
@@ -26,7 +26,7 @@ export function handleArr(listItems){
    return [...newFoods, ...moreList];
 }
 
-//displaying item list
+// displaying list of sub-item
 export function listItem (listItems){
    const listFoods = handleArr(listItems);
    const format = listFoods.map((value, index) => {
