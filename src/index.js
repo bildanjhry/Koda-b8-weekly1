@@ -1,14 +1,22 @@
 import { handleArr, listItem } from "./utils/list-item.js";
 import { chooseItem } from "./actions/choose-item.js";
 import { handleCart } from "./actions/handle-cart.js";
-import { foods, drinks, snacks, paket, happyMeal, desert } from "./datas/index.js";
+import { getFoods, getDrinks, getSnacks, getPaket, getHappyMeal, getDesert } from "./services/fetch-data.js";
 import { init, checkoutQuestion, listQuestion } from "./services/questions.js";
 import { shop } from './actions/choose-item.js';
 import { printing } from "./utils/print.js";
 
 const { handleHomeMenuText, checkout } = printing;
 
-export function handleHomeMenu(ans) {
+export async function handleHomeMenu(ans) {
+
+  const foods = await getFoods();
+  const drinks = await getDrinks();
+  const desert = await getDesert();
+  const snacks = await getSnacks();
+  const paket = await getPaket();
+  const happyMeal = await getHappyMeal();
+
   switch(ans){
   case '1' :
     listQuestion('1', foods, listItem, handleArr, chooseItem);
