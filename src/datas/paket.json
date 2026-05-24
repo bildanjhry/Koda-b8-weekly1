@@ -1,0 +1,114 @@
+[
+  {
+    "id": "p1",
+    "name": "Paket Hemat Fish Fillet Burger, Medium",
+    "menu": [
+      { "item": "", "size": "", "qty": 1 },
+      { "item": "", "size": "", "qty": 1 },
+      { "item": "", "qty": 1 }
+    ],
+    "cat": {
+      "id": 4,
+      "name": "paket"
+    },
+    "price": 48000,
+    "isPromo": false
+  },
+  {
+    "id": "p2",
+    "name": "Paket Hemat Beef Burger Deluxe + PaHeBat McSpaghetti Ayam McD Spicy + 2 McFlurry feat. OREO",
+    "menu": [
+      { "item": "", "qty": 1 },
+      { "item": "", "size": "", "qty": 1 },
+      { "item": "", "qty": 1 },
+      { "item": "", "qty": 2 },
+      { "item": "", "size": "", "qty": 1 },
+      { "item": "", "size": "", "qty": 1 }
+    ],
+    "price": 93500,
+    "cat": {
+      "id": 6,
+      "name": "paket"
+    },
+    "isPromo": true,
+    "discount": "30%"
+  },
+  {
+    "id": "p3",
+    "name": "PaNas 2 Krispy with Fries, Large",
+    "desc": "PaNas",
+    "menu": [
+      { "item": "", "qty": 2 },
+      { "item": "", "size": "", "qty": 1 },
+      { "item": "", "size": "", "qty": 1 }
+    ],
+    "price": 63500,
+    "cat": {
+      "id": 6,
+      "name": "paket"
+    },
+    "isPromo": false
+  },
+  {
+    "id": "p4",
+    "name": "PaNas 2 Spicy with Fries, Large",
+    "desc": "PaNas",
+    "menu": [
+      { "item": "", "qty": 2 },
+      { "item": "", "size": "", "qty": 1 },
+      { "item": "", "size": "", "qty": 1 }
+    ],
+    "price": 63500,
+    "cat": {
+      "id": 6,
+      "name": "paket"
+    },
+    "isPromo": false
+  },
+  {
+    "id": "p5",
+    "name": "PaNas 2 Spicy, Medium",
+    "desc": "PaNas",
+    "menu": [
+      { "item": "", "qty": 2 },
+      { "item": "", "qty": 1 },
+      { "item": "", "qty": 1 }
+    ],
+    "price": 53000,
+    "cat": {
+      "id": 6,
+      "name": "paket"
+    },
+    "isPromo": false
+  },
+  {
+    "id": "p6",
+    "name": "Paket Hemat Beef Burger Deluxe, Medium",
+    "menu": [
+      { "item": "", "qty": 1 },
+      { "item": "", "size": "", "qty": 1 },
+      { "item": "", "size": "", "qty": 1 }
+    ],
+    "price": 45000,
+    "cat": {
+      "id": 6,
+      "name": "paket"
+    },
+    "isPromo": false
+  },
+  {
+    "id": "p7",
+    "name": "PaNas 1 Krispy",
+    "desc": "PaNas",
+    "menu": [
+      { "item": "", "qty": 1 },
+      { "item": "", "qty": 1 }
+    ],
+    "price": 40500,
+    "cat": {
+      "id": 6,
+      "name": "paket"
+    },
+    "isPromo": false
+  }
+]
