@@ -1,0 +1,72 @@
+[
+  {
+    "id": "s1",
+    "name": "Apple Pie",
+    "cat": {
+      "id": 3,
+      "name": "snack"
+    },
+    "price": 13000,
+    "isPromo": false
+  },
+  {
+    "id": "s2",
+    "name": "HashBrown",
+    "cat": {
+      "id": 3,
+      "name": "snack"
+    },
+    "price": 15000,
+    "isPromo": false
+  },
+  {
+    "id": "s3",
+    "name": "Sweet Corn",
+    "cat": {
+      "id": 3,
+      "name": "snack"
+    },
+    "price": 13000,
+    "isPromo": false
+  },
+  {
+    "id": "s4",
+    "name": "McSpaghetti Pedas Manis",
+    "cat": {
+      "id": 3,
+      "name": "snack"
+    },
+    "price": 15000,
+    "isPromo": false
+  },
+  {
+    "id": "s5",
+    "name": "McSpaghetti",
+    "cat": {
+      "id": 3,
+      "name": "snack"
+    },
+    "price": 16000,
+    "isPromo": false
+  },
+  {
+    "id": "s6",
+    "name": "McNuggets 4 pcs",
+    "cat": {
+      "id": 3,
+      "name": "snack"
+    },
+    "price": 28500,
+    "isPromo": false
+  },
+  {
+    "id": "s7",
+    "name": "Chicken Snack Wrap",
+    "cat": {
+      "id": 3,
+      "name": "snack"
+    },
+    "price": 19500,
+    "isPromo": false
+  }
+]

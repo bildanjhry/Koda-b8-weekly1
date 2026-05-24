@@ -1,0 +1,157 @@
+[
+  {
+    "id": "d1",
+    "name": "Iced Coffee",
+    "cat": {
+      "id": 2,
+      "name": "drink"
+    },
+    "price": 14000,
+    "isPromo": true
+  },
+  {
+    "id": "d2",
+    "name": "Coke Float",
+    "cat": {
+      "id": 2,
+      "name": "drink"
+    },
+    "size": [
+      {
+        "name": "Small",
+        "price": 11000
+      },
+      {
+        "name": "Medium",
+        "price": 13000
+      },
+      {
+        "name": "Large",
+        "price": 15000
+      }
+    ],
+    "isPromo": false
+  },
+  {
+    "id": "d3",
+    "name": "Fanta",
+    "cat": {
+      "id": 2,
+      "name": "drink"
+    },
+    "size": [
+      {
+        "name": "Small",
+        "price": 11000
+      },
+      {
+        "name": "Medium",
+        "price": 13000
+      },
+      {
+        "name": "Large",
+        "price": 15000
+      }
+    ],
+    "isPromo": false
+  },
+  {
+    "id": "d4",
+    "name": "Iced Lychee Tea",
+    "cat": {
+      "id": 2,
+      "name": "drink"
+    },
+    "price": 22000,
+    "isPromo": false
+  },
+  {
+    "id": "d5",
+    "name": "Tehbotol Kotak",
+    "cat": {
+      "id": 2,
+      "name": "drink"
+    },
+    "price": 12000,
+    "isPromo": false
+  },
+  {
+    "id": "d6",
+    "name": "Fruit Tea Lemon",
+    "cat": {
+      "id": 2,
+      "name": "drink"
+    },
+    "size": [
+      {
+        "name": "Small",
+        "price": 11000
+      },
+      {
+        "name": "Medium",
+        "price": 13000
+      },
+      {
+        "name": "Large",
+        "price": 15000
+      }
+    ],
+    "isPromo": false
+  },
+  {
+    "id": "d7",
+    "name": "Coca-cola",
+    "cat": {
+      "id": 2,
+      "name": "drink"
+    },
+    "size": [
+      {
+        "name": "Small",
+        "price": 11000
+      },
+      {
+        "name": "Medium",
+        "price": 13000
+      },
+      {
+        "name": "Large",
+        "price": 15000
+      }
+    ],
+    "isPromo": false
+  },
+  {
+    "id": "d8",
+    "name": "Sprite",
+    "cat": {
+      "id": 2,
+      "name": "drink"
+    },
+    "size": [
+      {
+        "name": "Small",
+        "price": 11000
+      },
+      {
+        "name": "Medium",
+        "price": 13000
+      },
+      {
+        "name": "Large",
+        "price": 15000
+      }
+    ],
+    "isPromo": false
+  },
+  {
+    "id": "d9",
+    "name": "Hot Coffee",
+    "cat": {
+      "id": 2,
+      "name": "drink"
+    },
+    "price": 13000,
+    "isPromo": false
+  }
+]
