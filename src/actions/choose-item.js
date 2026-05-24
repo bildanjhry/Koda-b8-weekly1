@@ -26,7 +26,7 @@ export function chooseItem(input, answer, listItems, handleArr) {
   let isFound = false;
 
   if(answer > items.length || isNaN(currInput)){
-    throw new Error(`'\n\n     *Pilihan tidak tersedia.'`);
+    throw new Error(`\n\n    *Pilihan tidak tersedia.`);
   }
    
   // add item to cart actions

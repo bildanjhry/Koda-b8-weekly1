@@ -8,14 +8,15 @@ import { printing } from "./utils/print.js";
 
 const { handleHomeMenuText, checkout } = printing;
 
-export async function handleHomeMenu(ans) {
+// request all required datas
+const foods = await getFoods();
+const drinks = await getDrinks();
+const desert = await getDesert();
+const snacks = await getSnacks();
+const paket = await getPaket();
+const happyMeal = await getHappyMeal();
 
-  const foods = await getFoods();
-  const drinks = await getDrinks();
-  const desert = await getDesert();
-  const snacks = await getSnacks();
-  const paket = await getPaket();
-  const happyMeal = await getHappyMeal();
+export async function handleHomeMenu(ans) {
 
   switch(ans){
   case '1' :

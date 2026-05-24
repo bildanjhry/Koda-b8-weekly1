@@ -5,17 +5,18 @@ import { printing } from "../utils/print.js";
 const { handleHomeMenuText, checkout } = printing;
 
 // 1. --> init home menu
-export async function init(params, quest, actionCallback, retry = init){
+export async function init(params, quest, actionCallback){
   try{
     const result = await question(params, quest);
-    actionCallback(result);
+    await actionCallback(result);
   } catch(err){
     console.log(err.message);
+
     // retry question
     if(shop.length > 0){
-      return retry("hasList", handleHomeMenuText, handleHomeMenu);
+      return init(params, quest, actionCallback);
     } else {
-      return retry("", handleHomeMenuText, handleHomeMenu);
+      return init(params, quest, actionCallback);
     }
   }
 }
