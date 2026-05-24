@@ -1,0 +1,53 @@
+[
+  {
+    "id": "hm1",
+    "name": "Happy Meal 4 Pcs McNuggets",
+    "menu": [
+      {
+        "item": "",
+        "qty": 1
+      },
+      {
+        "item": "",
+        "size": "",
+        "qty": 1
+      },
+      {
+        "item": "",
+        "qty": 1
+      }
+    ],
+    "cat": {
+      "id": 5,
+      "name": "Happy Meal"
+    },
+    "price": 45000,
+    "isPromo": false
+  },
+  {
+    "id": "hm2",
+    "name": "Happy Meal",
+    "desc": "Happy Meal Ayam McD",
+    "menu": [
+      {
+        "item": "",
+        "qty": 1
+      },
+      {
+        "item": "",
+        "qty": 1
+      },
+      {
+        "item": "",
+        "size": "",
+        "qty": 1
+      }
+    ],
+    "price": 45000,
+    "cat": {
+      "id": 5,
+      "name": "Happy Meal"
+    },
+    "isPromo": false
+  }
+]

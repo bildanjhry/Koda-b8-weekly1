@@ -1,0 +1,56 @@
+[
+   {
+      "id":"f1",
+      "name":"Cheese Burger",
+      "price":35000,
+      "cat":{"id":1, "name": "food"},
+      "isPromo":true
+   },
+   {
+      "id":"f2",
+      "name":"Nasi Uduk McD",
+      "price":22000,
+      "cat":{"id":1, "name": "food"},
+      "isPromo":false
+   },
+   {
+      "id":"f3",
+      "name":"Fish Fillet Burger",
+      "price":34000,
+      "cat":{"id":1, "name": "food"},
+      "isPromo":false
+   },
+   {
+      "id":"f4",
+      "name":"Double Cheese Burger",
+      "price":34000,
+      "cat":{"id":1, "name": "food"},
+      "isPromo":false
+   },
+   {
+      "id":"f1",
+      "name":"Beef Burger Deluxe",
+      "price":29500,
+      "cat":{"id":1, "name": "food"},
+      "isPromo":false
+   },
+   {
+      "id":"f6",
+      "name":"French Fries",
+      "size":[ 
+         {"name": "Reguler", "price": 14000}, 
+         {"name": "Medium", "price": 22000}, 
+         {"name": "Large", "price": 29500}],
+      "cat":{"id":1, "name": "food"},
+      "isPromo":false
+   },
+   {
+      "id":"f7",
+      "name":"Nasi",
+      "size":[ 
+         {"name": "Medium", "price": 10000}, 
+         {"name": "Large", "price": 13500}],
+      "cat":{"id":1, "name": "food"},
+      "isPromo":false
+   }
+]
