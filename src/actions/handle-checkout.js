@@ -1,14 +1,16 @@
-import { closeQuestion } from "../services/input.js";
 import { backHomeQuestion } from "../services/questions.js";
 import { printing } from "../utils/print.js";
 import { eraseCartList } from "./choose-item.js";
-
+const {qrCode, struct} = printing;
 let order = 0;
 
-function confirmBackHome(
+export function confirmBackHome(
   result, 
-  params, init, 
-  handleHomeMenu, handleHomeMenuText
+  params, 
+  init, 
+  handleHomeMenu, 
+  handleHomeMenuText,
+  closeQuestion
 ){
   switch(result){
   case 'y':
@@ -22,36 +24,51 @@ function confirmBackHome(
   }
 }
 
+export function transactionActions(shop, resultOrder, orderQuestion){
+  console.log(`\n                   Proses...`);
+  order += 1;
+  setTimeout(() => {
+    qrCode();
+    setTimeout(() => {
+      console.log(`\n\n\n\n\n
+                        **Pembarayan berhasil**            \n\n\n`);
+      // printing struct
+      struct(shop, 
+        resultOrder, 
+        order, 
+        'Paid', 
+        'QRIS', 
+        'Silahkan tunggu pesanan anda.' );
+      eraseCartList(); // reset cart back to empty
+      setTimeout(() => {
+        backHomeQuestion(orderQuestion, confirmBackHome);
+      },1000);
+    },2500);
+  },1500);
+}
+
 export function handleTransactions(
   result, 
   shop, 
   orderQuestion, 
-  resultOrder
+  resultOrder,
+  transactionActions
 ){
-  const {qrCode, struct} = printing;
+
+  if(!(Array.isArray(shop))){
+    throw new Error(`\n\n    *Cart as parameter should be an array`);
+  }
+  if(shop.length < 1){
+    throw new Error(`\n\n    *Cart can not be empty before doing transactions`);
+  }
+
+  if((resultOrder - 10) <= 90){
+    throw new Error(`\n\n    *Total must be more than 2 digit before doing transactions`);
+  }
 
   switch(result) {
   case '1':
-    console.log(`\n                   Proses...`);
-    order += 1;
-    setTimeout(() => {
-      qrCode();
-      setTimeout(() => {
-        console.log(`\n\n\n\n\n
-                        **Pembarayan berhasil**            \n\n\n`);
-        // printing struct
-        struct(shop, 
-          resultOrder, 
-          order, 
-          'Paid', 
-          'QRIS', 
-          'Silahkan tunggu pesanan anda.' );
-        eraseCartList(); // reset cart back to empty
-        setTimeout(() => {
-          backHomeQuestion(orderQuestion, confirmBackHome);
-        },1000);
-      },2500);
-    },1500);
+    transactionActions(shop, resultOrder, orderQuestion);
     break;
   case '2':
     console.log(`\n                       Proses...\n\n\n\n`);

@@ -3,6 +3,9 @@ import sumTotal from "./sum-total.js";
 
 export const printing = {
   handleHomeMenuText: function(stat){
+    if(typeof stat !== "string"){
+      throw new Error(`\n\n    *Parameter must be a string`);
+    }
     if(stat === 'hasList'){
       return `
     Home Menu:
@@ -52,6 +55,14 @@ export const printing = {
     console.log(qrCode);
   },
   struct: function(itemList, result, order, paymentStatus, paymentMethod, desc){
+    if(!(Array.isArray(itemList))){
+      throw new Error(`\n\n    *Cart value must be an array`);
+    }
+    
+    if(itemList.length < 1){
+      throw new Error(`\n\n    *Cart can not be empty array`);
+    }
+    
     console.log(`
                 ---------------------------------------
                               Mc Donalds
@@ -82,6 +93,13 @@ export const printing = {
 
   },
   checkout: function(shop){
+    if(!(Array.isArray(shop))){
+      throw new Error(`\n\n    *Cart value must be an array`);
+    }
+    
+    if(shop.length < 1){
+      throw new Error(`\n\n    *Cart can not be empty array`);
+    }
     const total = sumTotal(shop);
     console.log(`
                    Pesanan anda:
