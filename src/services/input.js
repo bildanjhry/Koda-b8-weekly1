@@ -19,6 +19,9 @@ export function question(params, question){
   });
 }
 
+/**
+ * Closing readline CLI
+ */
 export function closeQuestion(){
   rl.close();
 }

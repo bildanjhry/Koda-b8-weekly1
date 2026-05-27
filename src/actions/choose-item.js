@@ -4,6 +4,13 @@ import { printing } from "../utils/print.js";
 export let shop = [];
 let isFound = false;
 
+/**
+ * Clear all items from cart.
+ *
+ * @throws {Error} If cart is already empty.
+ *
+ * @returns {void}
+ */
 export function eraseCartList(){
   if(shop.length < 1){
     throw new Error(`\n\n     *Cart already empty`);
@@ -13,6 +20,29 @@ export function eraseCartList(){
 
 const { handleHomeMenuText, choosenItemList } = printing;
 
+/**
+ * Handle order confirmation response.
+ *
+ * This function:
+ * - redirects user back to home menu
+ * - continues current order flow
+ * - validates confirmation input
+ *
+ * @param {string} result  
+ * User confirmation answer from readline.
+ * 
+ * @param {string} input 
+ * Selected menu input
+ * 
+ * @param {Function} init
+ * Function for going back home.
+ *
+ * @throws {Error} If init is not a function.
+ * 
+ * @throws {Error} If confirmation input is invalid.
+ *
+ * @returns {*}
+ */
 export function confirmOrder(result, input, params, init){
 
   if(typeof init !== "function"){
@@ -29,6 +59,35 @@ export function confirmOrder(result, input, params, init){
   }
 }
 
+/**
+ * Handle item selection from menu list.
+ *
+ * This function:
+ * - validates selected item input
+ * - adds selected item to cart
+ * - displays selected items list
+ * - asks user for order confirmation
+ *
+ * @param {string} input 
+ * Current list item category's selected number from user.
+ * 
+ * @param {string|number} answer 
+ * Selected item number
+ * 
+ * @param {object[]} listItems  
+ * Items list.
+ * 
+ * @param {Function} handleArr 
+ * Function for formatting item list.
+ *
+ * @throws {Error} If listItems is not an array.
+ * 
+ * @throws {Error} If listItems is empty.
+ * 
+ * @throws {Error} If selected item is unavailable.
+ *
+ * @returns {void}
+ */
 export function chooseItem(input, answer, listItems, handleArr) {
   
   if(!(Array.isArray(listItems))){
@@ -58,6 +117,22 @@ export function chooseItem(input, answer, listItems, handleArr) {
   }
 }
 
+/**
+ * Add selected item to cart.
+ *
+ * This function:
+ * - checks selected item from menu list
+ * - adds new item into cart
+ * - increases item quantity if item already exists
+ *
+ * @param {object[]} items 
+ * Items list
+ * 
+ * @param {number} currInput 
+ * Selected item form displaying.
+ *
+ * @returns {void}
+ */
 export default function cartActions(items, currInput){
   items.forEach((item, index) => {
     if(currInput === index){

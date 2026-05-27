@@ -4,6 +4,31 @@ import { eraseCartList } from "./choose-item.js";
 const {qrCode, struct} = printing;
 let order = 0;
 
+/**
+ * Asking user if want to go back home
+ * 
+ * @param {string} result
+ * A result from user after questions been asked.
+ * 
+ * @param {string} params
+ * A grup of string that will get pass to readline CLI as a question
+ *  
+ * @typedef {function} init
+ * Callback function for go back to home menu
+ * 
+ * @param {Function} handleHomeMenuText
+ * Callback function for init's parameter
+ * 
+ * @param {Function} handleHomeMenu
+ * Callback function for init's parameter
+ * 
+ * @param {Function} closeQuestion
+ * Callback function for closing the program
+ * 
+ * @throws
+ * this will throws an err if user's input does not matches any cases
+ * 
+ */
 export function confirmBackHome(
   result, 
   params, 
@@ -24,6 +49,43 @@ export function confirmBackHome(
   }
 }
 
+/**
+ * Handle QRIS payment transaction flow.
+ * 
+ * This function:
+ * - displays QR code payment
+ * - prints transaction receipt
+ * - clears cart data
+ * - redirects user back to home menu
+ *
+ * @param {Array} shop
+ * Cart
+ * @param {number} resultOrder 
+ * Total in a cart
+ * 
+ * @param {String} orderQuestion 
+ * A grup of string that will pass a parameter
+ * 
+ * @param {object} deps 
+ * Injected dependencies.
+ * 
+ * @param {Function} deps.qrCode  
+ * Function for displaying QR code
+ * 
+ * @param {Function} deps.struct 
+ * Function for printing receipt struct
+ * 
+ * @param {Function} deps.eraseCartList 
+ * Function for clearing cart
+ * 
+ * @param {Function} deps.backHomeQuestion 
+ * Function for returning to home menu
+ * 
+ * @param {Function} deps.setTimeout 
+ * Timeout function dependency.
+ *
+ * @returns {void}
+ */
 export function transactionActionsQris(
   shop, 
   resultOrder, 
@@ -58,6 +120,40 @@ export function transactionActionsQris(
   },1500);
 }
 
+/**
+ * Handle Cash payment transaction flow.
+ * 
+ * This function:
+ * - prints transaction receipt
+ * - clears cart data
+ * - redirects user back to home menu
+ *
+ * @param {Array} shop
+ * Cart
+ * 
+ * @param {number} resultOrder 
+ * Total in a cart
+ * 
+ * @param {String} orderQuestion 
+ * A grup of string that will pass a parameter
+ * 
+ * @param {object} deps 
+ * Injected dependencies.
+ * 
+ * @param {Function} deps.struct 
+ * Function for printing receipt struct
+ * 
+ * @param {Function} deps.eraseCartList 
+ * Function for clearing cart
+ * 
+ * @param {Function} deps.backHomeQuestion 
+ * Function for returning to home menu
+ * 
+ * @param {Function} deps.setTimeout 
+ * Timeout function dependency.
+ *
+ * @returns {void}
+ */
 export function transactionActionsCash(
   shop, 
   resultOrder, 
@@ -86,6 +182,44 @@ export function transactionActionsCash(
   },1500);
 }
 
+/**
+ * Handle transaction payment method selection.
+ *
+ * This function validates:
+ * - cart data
+ * - total transaction amount
+ * - selected payment method
+ *
+ * Then executes the selected transaction handler.
+ *
+ * @param {string} result 
+ * Selected payment method option
+ * 
+ * @param {object[]} shop 
+ * Cart items
+ * 
+ * @param {String} orderQuestion 
+ * A grup of string that will pass a parameter
+ * 
+ * @param {number} resultOrder 
+ * Total order price.
+ * 
+ * @param {Function} transQris 
+ * QRIS transaction handler.
+ * 
+ * @param {Function} transCash 
+ * Cash transaction handler.
+ *
+ * @throws {Error} If cart is not an array.
+ * 
+ * @throws {Error} If cart is empty.
+ * 
+ * @throws {Error} If total transaction amount is invalid.
+ * 
+ * @throws {Error} If selected payment method is unavailable.
+ *
+ * @returns {void}
+ */
 export function handleTransactions(
   result, 
   shop, 

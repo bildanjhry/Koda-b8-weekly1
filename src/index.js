@@ -16,6 +16,21 @@ const snacks = await getSnacks();
 const paket = await getPaket();
 const happyMeal = await getHappyMeal();
 
+/**
+ * The main home menu.
+ * 
+ * Function will get call and handle the main menu when the application start running, this function has
+ * switch case program that will call another function and send parameters based on user input
+ * 
+ * @param {string} ans
+ * Will take the input from user using readline cli
+ * 
+ * @throws {Error}
+ * will throws some error if the parameter does not matches any cases
+ * 
+ * @returns {void} 
+ */
+
 export function handleHomeMenu(ans) {
 
   switch(ans){
@@ -48,5 +63,20 @@ export function handleHomeMenu(ans) {
 
   }
 }
+
+/**
+ * Initilize program.
+ * 
+ * The first function that get called when aplication starts running.
+ * 
+ * @param {string} ""
+ * Default empty string as a params to do first initialize
+ * 
+ * @param {Function} handleHomeMenuText
+ * A callback function that will get send and returning questions for CLI.
+ * 
+ * @param {Function} handleHomeMenu
+ * A callback function that will do the actions after user input get received.
+ */
 
 init("", handleHomeMenuText, handleHomeMenu);

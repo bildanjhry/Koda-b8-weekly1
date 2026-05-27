@@ -4,6 +4,26 @@ import { handleTransactions } from "./handle-checkout.js";
 import { printing } from "../utils/print.js";
 const { handleHomeMenuText } = printing;
 
+/**
+ * Remove or decrease item quantity from cart.
+ *
+ * If item quantity is greater than 1,
+ * the quantity will be decreased by 1.
+ *
+ * Otherwise, the item will be removed
+ * from the cart array.
+ *
+ * @param {object[]} cart 
+ * Cart items data.
+ * 
+ * @param {number} idx 
+ * Input from user.
+ *
+ * @throws {Error} If cart is not an array.
+ * @throws {Error} If cart is empty.
+ *
+ * @returns {void}
+ */
 export function splicingItem(cart, idx){
   if(!(Array.isArray(cart))){
     throw new Error(`\n\n    *Cart as parameter splicingItem() must be an array`);
@@ -21,6 +41,32 @@ export function splicingItem(cart, idx){
     }
   });
 }
+
+/**
+ * Remove selected item from cart.
+ *
+ * This function:
+ * - validates cart data
+ * - removes or decreases item quantity
+ * - redirects user to home menu
+ *
+ * @param {object[]} shop
+ * Cart items
+ * 
+ * @param {string|number} res  
+ * Selected cart's item
+ * 
+ * @param {Function} handleHomeMenu 
+ * Function for handling home menu navigation.
+ *
+ * @throws {Error} If cart is not an array.
+ * 
+ * @throws {Error} If cart is empty.
+ * 
+ * @throws {Error} If selected item is unavailable.
+ *
+ * @returns {void}
+ */
 
 export function eraseCart(shop, res, handleHomeMenu) {
   
@@ -43,6 +89,37 @@ export function eraseCart(shop, res, handleHomeMenu) {
   }
 };
 
+/**
+ * Handle cart menu actions.
+ *
+ * Available actions:
+ * - transaction process
+ * - continue ordering
+ * - remove cart item
+ *
+ * @param {string} ans 
+ * Selected cart menu option from user.
+ * 
+ * @param {Function} init 
+ * Function for go back to home menu
+ * 
+ * @param {object[]} shop 
+ * Cart items
+ * 
+ * @param {Function} handleHomeMenu 
+ * Function for handling home menu navigation
+ * 
+ * @param {string} handleHomeMenuText 
+ * A grup of string that will pass as a parameter.
+ *
+ * @throws {Error} If cart is not an array.
+ * 
+ * @throws {Error} If cart is empty.
+ * 
+ * @throws {Error} If selected menu option is invalid.
+ *
+ * @returns {void}
+ */
 export function handleCart(
   ans, 
   init, 

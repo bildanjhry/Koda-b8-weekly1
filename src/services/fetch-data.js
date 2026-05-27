@@ -1,5 +1,13 @@
 import fs from "fs/promises";
-
+/**
+ * @async
+ * 
+ * Feching foods from json in datas folder.
+ * This function will returning an array of object of foods
+ * 
+ * @returns {Promise<object[]>}
+ * Returning promise foods of array of object
+ */
 export async function getFoods(){
   try{
     const url = './src/datas/foods.json';
@@ -11,6 +19,15 @@ export async function getFoods(){
   }
 }
 
+/**
+ * @async
+ * 
+ * Feching drinks from json in datas folder.
+ * This function will returning an array of object of foods
+ * 
+ * @returns {Promise<object[]>}
+ * Returning promise drinks of array of object
+ */
 export async function getDrinks(){
   try{
     const url = './src/datas/drinks.json';
@@ -22,6 +39,15 @@ export async function getDrinks(){
   }
 }
 
+/**
+ * @async
+ * 
+ * Feching snacks from json in datas folder.
+ * This function will returning an array of object of snacks
+ * 
+ * @returns {Promise<object[]>}
+ * Returning promise snacks of array of object
+ */
 export async function getSnacks(){
   try{
     const url = './src/datas/snacks.json';
@@ -33,6 +59,15 @@ export async function getSnacks(){
   }
 }
 
+/**
+ * @async
+ * 
+ * Feching desert from json in datas folder.
+ * This function will returning an array of object of desert
+ * 
+ * @returns {Promise<object[]>}
+ * Returning promise desert of array of object
+ */
 export async function getDesert(){
   try{
     const url = './src/datas/desert.json';
@@ -44,6 +79,15 @@ export async function getDesert(){
   }
 }
 
+/**
+ * @async
+ * 
+ * Feching paket from json in datas folder.
+ * This function will returning an array of object of paket
+ * 
+ * @returns {Promise<object[]>}
+ * Returning promise paket of array of object
+ */
 export async function getPaket(){
   try{
     const url = './src/datas/paket.json';
@@ -55,6 +99,16 @@ export async function getPaket(){
   }
 }
 
+
+/**
+ * @async
+ * 
+ * Feching foods from json in datas folder.
+ * This function will returning an array of object of foods
+ * 
+ * @returns {Promise<object[]>}
+ * Returning promise foods of array of object
+ */
 export async function getHappyMeal(){
   try{
     const url = './src/datas/happy-meal.json';
