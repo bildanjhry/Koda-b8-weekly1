@@ -16,7 +16,7 @@ const snacks = await getSnacks();
 const paket = await getPaket();
 const happyMeal = await getHappyMeal();
 
-export async function handleHomeMenu(ans) {
+export function handleHomeMenu(ans) {
 
   switch(ans){
   case '1' :
@@ -44,9 +44,9 @@ export async function handleHomeMenu(ans) {
     checkoutQuestion(shop, checkout, handleCart);
     break;
   default :
-    throw new Error(`\n\n    *Pilihan tidak tersedia\n`); 
+  { throw new Error(`\n\n    *Pilihan tidak tersedia\n`);} 
+
   }
 }
-
 
 init("", handleHomeMenuText, handleHomeMenu);

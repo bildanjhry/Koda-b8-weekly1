@@ -2,6 +2,15 @@ import moneyFormat from "./money-format.js";
 
 // merge arrays from different format
 export function handleArr(listItems){
+
+  if(!(Array.isArray(listItems))){
+    throw new Error(`\n\n     *List item before merge in handleArr() must be an array`);
+  }
+
+  if(listItems.length < 1){
+    throw new Error(`\n\n     *List item before merge in handleArr() can not be empty`);
+  }
+
   const newOne = listItems;
   const moreList = [];
     
@@ -28,6 +37,15 @@ export function handleArr(listItems){
 
 // displaying list of sub-item
 export function listItem (listItems){
+
+  if(!(Array.isArray(listItems))){
+    throw new Error(`\n\n     *List item as a parameter in listItem() must be an array`);
+  }
+
+  if(listItems.length < 1){
+    throw new Error(`\n\n     *List item as a parameter in listItem() can not be empty array`);
+  }
+
   const listFoods = handleArr(listItems);
   const format = listFoods.map((value, index) => {
     let no = 0;

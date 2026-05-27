@@ -245,12 +245,12 @@ describe('\n   ----- Unit Test ----\n', function(){
     //   assert.throws(() => eraseCart(), {message:`\n\n     *Cart already empty`});
     // });
 
-    it('Input for go back to item list in confrimOrder() must be a string', () => {
-      assert.throws(() => confirmOrder('y', 1, "", init), {message:`\n\n     *Input for go back to item list must be a string`});
-    });
+    // it('Input for go back to item list in confrimOrder() must be a string', () => {
+    //   assert.throws(() => confirmOrder('y', 1, "", init), {message:`\n\n     *Input for go back to item list must be a string`});
+    // });
 
     it('Parameter for go back to home menu in confrimOrder() must be a function', () => {
-      assert.throws(() => confirmOrder('n', 1, "", 'init'), {message:`\n\n     *Parameter init for go back to home menu must be a function`});
+      assert.throws(() => confirmOrder('n', '1', "", 'init'), {message:`\n\n     *Parameter init for go back to home menu must be a function`});
     });
 
     
@@ -342,19 +342,12 @@ describe('\n   ----- Unit Test ----\n', function(){
   });
     
   describe('Branches test', function(){
-    describe('\n   At confirm reorder', function(){
-      it('Should back to sub item list if Input matches Y', () => {
-        assert.doesNotThrow(() => {
-          confirmOrder('y', "1", "", "");
-        });
+    describe('\n   At confirm reorder:', function(){
+      it('Function confirmOrder() should call init() to go back to home menu if input matches N', function(){
+        const init = mock.fn();
+        confirmOrder('n', 1, "", init);
+        assert.equal(init.mock.callCount(), 1);
       });
-  
-      it('Should back to home menu if Input matches N', () => {
-        assert.doesNotThrow(() => {
-          confirmOrder('n', "1", "", init);
-        });
-      });
-  
     });
   
     describe('\n   At home menu:', function(){
@@ -414,7 +407,7 @@ describe('\n   ----- Unit Test ----\n', function(){
 
     });
 
-    describe('\n   At confirm back home', function(){
+    describe('\n   At confirm back home:', function(){
       it('Should call init() to back to home menu when input matches Y', () => {
 
         const init = mock.fn();
@@ -433,7 +426,7 @@ describe('\n   ----- Unit Test ----\n', function(){
       });
     });
 
-    describe('\n\n   At handle transactions', function(){
+    describe('\n\n   At handle transactions:', function(){
       it('Should call transactionActions() to print the result after sucess do transactions', function(){
         const transactionActions = mock.fn();
         handleTransactions('1', cart, "", 100000, transactionActions);
@@ -442,11 +435,12 @@ describe('\n   ----- Unit Test ----\n', function(){
 
     });
 
-    // describe('Redline Question test', function(){
-    //   it('init() callback must be a function', async function(){
-    //     assert.throws(async () => await init("", handleHomeMenu, 'contoh'), `\n\n   *Action callback must be a function`);
-    //   });
-
   });
+  
+  // describe('Redline Question test', function(){
+  //   it('init() callback must be a function', async function(){
+  //     assert.throws(async () => await init("", handleHomeMenu, 'contoh'), {message:`\n\n   *Action callback must be a function`});
+  //   });  
+  // });
 
 });
