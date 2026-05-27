@@ -24,26 +24,65 @@ export function confirmBackHome(
   }
 }
 
-export function transactionActions(shop, resultOrder, orderQuestion){
+export function transactionActionsQris(
+  shop, 
+  resultOrder, 
+  orderQuestion,
+  deps = {
+    qrCode,
+    struct,
+    eraseCartList,
+    backHomeQuestion,
+    setTimeout
+  }
+){
   console.log(`\n                   Proses...`);
   order += 1;
-  setTimeout(() => {
-    qrCode();
-    setTimeout(() => {
+  deps.setTimeout(() => {
+    deps.qrCode();
+    deps.setTimeout(() => {
       console.log(`\n\n\n\n\n
                         **Pembarayan berhasil**            \n\n\n`);
       // printing struct
-      struct(shop, 
+      deps.struct(shop, 
         resultOrder, 
         order, 
         'Paid', 
         'QRIS', 
         'Silahkan tunggu pesanan anda.' );
-      eraseCartList(); // reset cart back to empty
-      setTimeout(() => {
-        backHomeQuestion(orderQuestion, confirmBackHome);
+      deps.eraseCartList(); // reset cart back to empty
+      deps.setTimeout(() => {
+        deps.backHomeQuestion(orderQuestion, confirmBackHome);
       },1000);
     },2500);
+  },1500);
+}
+
+export function transactionActionsCash(
+  shop, 
+  resultOrder, 
+  orderQuestion,
+  deps = {
+    struct,
+    eraseCartList,
+    backHomeQuestion,
+    setTimeout
+  }
+){
+  console.log(`\n                       Proses...\n\n\n\n`);
+  order += 1;
+  deps.setTimeout(() => {
+    // print struct
+    deps.struct(shop, 
+      resultOrder, 
+      order, 
+      'Unpaid', 
+      'Tunai', 
+      'Silahkan berikan ini kepada kasir.' );
+    deps.eraseCartList(); // reset cart bact to empty
+    deps.setTimeout(() => {
+      deps.backHomeQuestion(orderQuestion, confirmBackHome);
+    },1000);
   },1500);
 }
 
@@ -52,7 +91,8 @@ export function handleTransactions(
   shop, 
   orderQuestion, 
   resultOrder,
-  transactionActions
+  transQris = transactionActionsQris,
+  transCash = transactionActionsCash
 ){
 
   if(!(Array.isArray(shop))){
@@ -68,24 +108,10 @@ export function handleTransactions(
 
   switch(result) {
   case '1':
-    transactionActions(shop, resultOrder, orderQuestion);
+    transQris(shop, resultOrder, orderQuestion);
     break;
   case '2':
-    console.log(`\n                       Proses...\n\n\n\n`);
-    order += 1;
-    setTimeout(() => {
-      // print struct
-      struct(shop, 
-        resultOrder, 
-        order, 
-        'Unpaid', 
-        'Tunai', 
-        'Silahkan berikan ini kepada kasir.' );
-      eraseCartList(); // reset cart bact to empty
-      setTimeout(() => {
-        backHomeQuestion(orderQuestion, confirmBackHome);
-      },1000);
-    },1500);
+    transCash(shop, resultOrder, orderQuestion);
     break;
   default : 
     throw new Error(`\n\n    *Perintah Salah\n\n`);

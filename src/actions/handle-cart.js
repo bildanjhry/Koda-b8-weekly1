@@ -1,6 +1,6 @@
 import { eraseQuestion, init, transactionQuestion } from "../services/questions.js";
 import sumTotal from "../utils/sum-total.js";
-import { handleTransactions, transactionActions } from "./handle-checkout.js";
+import { handleTransactions } from "./handle-checkout.js";
 import { printing } from "../utils/print.js";
 const { handleHomeMenuText } = printing;
 
@@ -71,7 +71,6 @@ export function handleCart(
       total, 
       handleTransactions,
       handleCart,
-      transactionActions
     );
     break; } 
   case '2' :
