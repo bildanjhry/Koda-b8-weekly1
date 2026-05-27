@@ -23,10 +23,10 @@ const happyMeal = await getHappyMeal();
  * switch case program that will call another function and send parameters based on user input
  * 
  * @param {string} ans
- * Will take the input from user using readline cli
+ * Input from user using readline cli
  * 
  * @throws {Error}
- * will throws some error if the parameter does not matches any cases
+ * Throws some error if the parameter does not matches any cases
  * 
  * @returns {void} 
  */
@@ -70,13 +70,13 @@ export function handleHomeMenu(ans) {
  * The first function that get called when aplication starts running.
  * 
  * @param {string} ""
- * Default empty string as a params to do first initialize
+ * Default empty string as a parameter
  * 
  * @param {Function} handleHomeMenuText
- * A callback function that will get send and returning questions for CLI.
+ * Callback function that will get send and returning questions for CLI.
  * 
  * @param {Function} handleHomeMenu
- * A callback function that will do the actions after user input get received.
+ * Callback function that will do the actions after user input get received.
  */
 
 init("", handleHomeMenuText, handleHomeMenu);

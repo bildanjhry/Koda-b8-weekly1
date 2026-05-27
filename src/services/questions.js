@@ -67,8 +67,8 @@ export async function init(
  * @param {string} input
  * Receive an input from user to get process later
  *  
- * @param {Array} item 
- * An array of object that includes all the choosen items
+ * @param {object[]} items 
+ * Item list.
  * 
  * @param {Function} quest
  * A callback function that will returning a question that will display in CLI
@@ -153,8 +153,8 @@ export async function orderConfirmQuestion(
  * - Go Back
  * - Delete item
  * 
- * @param {Array} shop
- * An array that represent a cart
+ * @param {object[]} shop
+ * Cart item.
  *  
  * @param {Function} quest
  * A callback function that will returning a question that will display in CLI
@@ -188,8 +188,8 @@ export async function checkoutQuestion(
  * This function will handle transaction after option in checkout choosen to do transaction
  * and this function has same concept that will catch an error if action callback throwing it
  * 
- * @param {Array} shop
- * An array that represent a cart
+ * @param {object[]} shop
+ * Cart item.
  *  
  * @param {string} params
  * A grup of string that will get pass to readline CLI as a question
@@ -255,8 +255,8 @@ export async function backHomeQuestion(params, actionCallback){
  * @param {string} params
  * A grup of string that will get pass to readline CLI as a question
  *  
- * @param {Array} shop
- * An array that representing the cart
+ * @param {object[]} shop
+ * Cart item.
  * 
  * @param {Function} actionCallback 
  * A callback function for proccesing the action

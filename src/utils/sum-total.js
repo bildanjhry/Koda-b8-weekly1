@@ -1,3 +1,15 @@
+/**
+ * Summaries every item price in cart and returnig the total.
+ *
+ * @param {object[]} cart 
+ * Cart item.
+ *
+ * @throws {Error} If cart is emtpy.
+ * 
+ * @throws {Error} If cart is not an array.
+ *
+ * @returns {number} Total summary
+ */
 export default function sumTotal(cart){
   if(!(Array.isArray(cart))){
     throw new Error(`\n\n   *Oppps, Cart is invalid`);

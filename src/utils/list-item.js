@@ -1,6 +1,23 @@
 import moneyFormat from "./money-format.js";
 
-// merge arrays from different format
+/**
+ * Normalize and flatten item list data.
+ *
+ * This function:
+ * - validates input list
+ * - extracts base items (without size variants)
+ * - expands size-based variants into separate items
+ * - merges both into a single flat array
+ *
+ * @param {object[]} listItems
+ * List of menu items.
+ *
+ * @throws {Error} If listItems is not an array.
+ * 
+ * @throws {Error} If listItems is empty.
+ *
+ * @returns {object[]} Flattened list of items including size variants.
+ */
 export function handleArr(listItems){
 
   if(!(Array.isArray(listItems))){
@@ -35,7 +52,25 @@ export function handleArr(listItems){
   return [...newFoods, ...moreList];
 }
 
-// displaying list of sub-item
+/**
+ * Format item list for display in menu UI.
+ *
+ * This function:
+ * - validates input list
+ * - normalizes item list using handleArr()
+ * - formats items into numbered display string
+ * - displaying items list
+ *
+ * @param {object[]} listItems
+ * List of items.
+ *
+ * @throws {Error} If listItems is not an array.
+ * 
+ * @throws {Error} If listItems is empty.
+ *
+ * @returns {string} Formatted menu string with user input prompt.
+ * 
+ */
 export function listItem (listItems){
 
   if(!(Array.isArray(listItems))){
