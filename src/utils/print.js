@@ -1,7 +1,21 @@
 import moneyFormat from "./money-format.js";
 import sumTotal from "./sum-total.js";
 
+/**
+ * Collection of UI printing/rendering utilities.
+ */
 export const printing = {
+
+  /**
+   * Generate home menu UI text based on state.
+   *
+   * @param {string} stat 
+   * Menu state ('hasList' or default state).
+   *
+   * @throws {Error} If stat is not a string.
+   *
+   * @returns {string} Formatted menu text.
+   */
   handleHomeMenuText: function(stat){
     if(typeof stat !== "string"){
       throw new Error(`\n\n    *Parameter must be a string`);
@@ -35,6 +49,12 @@ export const printing = {
     
     Input:  `;
   },
+
+  /**
+   * Print QR code to console.
+   *
+   * @returns {void}
+   */
   qrCode: function() {
     const qrCode =`
                    █████████████████████████████████
@@ -54,6 +74,34 @@ export const printing = {
 
     console.log(qrCode);
   },
+  
+  /**
+   * Print transaction receipt structure to console.
+   *
+   * @param {object[]} itemList
+   * Cart items.
+   * 
+   * @param {number} result
+   * Total price.
+   * 
+   * @param {number} order 
+   * Order number.
+   * 
+   * @param {string} paymentStatus 
+   * Payment status text.
+   * 
+   * @param {string} paymentMethod
+   * Payment method used.
+   * 
+   * @param {string} desc 
+   * Additional description text.
+   *
+   * @throws {Error} If itemList is not an array.
+   * 
+   * @throws {Error} If itemList is empty.
+   *
+   * @returns {void}
+   */
   struct: function(itemList, result, order, paymentStatus, paymentMethod, desc){
     if(!(Array.isArray(itemList))){
       throw new Error(`\n\n    *Cart value must be an array`);
@@ -92,6 +140,19 @@ export const printing = {
                 ---------------------------------------\n\n`);
 
   },
+
+  /**
+   * Generate checkout summary and return menu string.
+   *
+   * @param {object[]} shop
+   * Cart items.
+   *
+   * @throws {Error} If shop is not an array.
+   * 
+   * @throws {Error} If shop is empty.
+   *
+   * @returns {string} Checkout UI string with total and actions.
+   */
   checkout: function(shop){
     if(!(Array.isArray(shop))){
       throw new Error(`\n\n    *Cart value must be an array`);
@@ -117,6 +178,15 @@ export const printing = {
                    
        Input: `;
   },
+
+  /**
+   * Print selected cart items to console.
+   *
+   * @param {object[]} shop
+   * Cart items.
+   *
+   * @returns {void}
+   */
   choosenItemList: function(shop){
     console.log('    --------------------\n');
     console.log(`    Pilihan anda: `);
