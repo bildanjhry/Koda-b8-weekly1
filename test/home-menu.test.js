@@ -1,6 +1,7 @@
 import { describe, it, after, before, afterEach, mock } from "node:test";
 import { handleHomeMenu } from "../src/index.js";
 import assert from "node:assert/strict";
+import { rl } from "../src/services/input.js";
 import { init } from "../src/services/questions.js";
 import { closeQuestion } from "../src/services/input.js";
 import { handleArr, listItem } from "../src/utils/list-item.js";
@@ -9,15 +10,15 @@ import cartActions, { chooseItem } from "../src/actions/choose-item.js";
 import sumTotal from "../src/utils/sum-total.js";
 import { shop } from "../src/actions/choose-item.js";
 import moneyFormat from "../src/utils/money-format.js";
-import { transactionActions } from "../src/actions/handle-checkout.js";
 import { confirmOrder } from "../src/actions/choose-item.js";
 import { printing } from "../src/utils/print.js";
-import { confirmBackHome, handleTransactions } from "../src/actions/handle-checkout.js";
+import { confirmBackHome, handleTransactions, transactionActionsQris, transactionActionsCash } from "../src/actions/handle-checkout.js";
 import { eraseCart, handleCart, splicingItem } from "../src/actions/handle-cart.js";
 import * as questions from '../src/services/questions.js';
+import { listQuestion } from "../src/services/questions.js";
 const snacks = await getSnacks();
 
-const { handleHomeMenuText, qrCode, struct, checkout } = printing;
+const { handleHomeMenuText, struct, checkout } = printing;
 
 describe('\n   ----- Unit Test ----\n', function(){
 
@@ -156,6 +157,24 @@ describe('\n   ----- Unit Test ----\n', function(){
       });
     });
 
+    it('when calling handleHomeMenuText() it should return a string', function(){
+      assert.strictEqual(typeof handleHomeMenuText(""), "string");
+    });
+
+    it('When calling qrCode() from utils it should print qr code', () => {
+      const spy = mock.method(console, 'log');
+      printing.qrCode();
+      assert.equal(spy.mock.callCount(), 1);
+      spy.mock.restore();
+    });
+
+    it('When calling struct() from utils it should print sturct items', () => {
+      const spy = mock.method(console, 'log');
+      printing.struct(cart,100000,1,"","","");
+      assert.equal(spy.mock.callCount(), 5);
+      spy.mock.restore();
+    });
+
     it('Array as a parameter in sturct() must be an array', function(){
       assert.throws(() => struct('{name:name}', "", "", "", ""), {message:`\n\n    *Cart value must be an array`});
     });
@@ -213,6 +232,50 @@ describe('\n   ----- Unit Test ----\n', function(){
 
     it('Total as a parameter in handleTransactions must be more than 2 digit', function(){
       assert.throws(() => handleTransactions('1', cart, "", 10, ""), {message:`\n\n    *Total must be more than 2 digit before doing transactions`});
+    });
+
+    it('Trans with qris should call qrCode(), struct(), eraseCartlist() and backHomeQuestion() to finish the transaction', function(){
+      const deps = {
+        qrCode: mock.fn(),
+        struct: mock.fn(),
+        eraseCartList: mock.fn(),
+        backHomeQuestion: mock.fn(),
+        setTimeout: (cb) => cb()
+      };
+
+      transactionActionsQris(
+        cart, 
+        100000, 
+        "", 
+        deps
+      );
+
+      assert.equal(deps.qrCode.mock.callCount(), 1);
+      assert.equal(deps.struct.mock.callCount(), 1);
+      assert.equal(deps.eraseCartList.mock.callCount(), 1);
+      assert.equal(deps.backHomeQuestion.mock.callCount(), 1);
+
+    });
+
+    it('Trans with cash should call qrCode(), struct(), eraseCartlist() and backHomeQuestion() to finish the transaction', function(){
+      const deps = {
+        struct: mock.fn(),
+        eraseCartList: mock.fn(),
+        backHomeQuestion: mock.fn(),
+        setTimeout: (cb) => cb()
+      };
+
+      transactionActionsCash(
+        cart, 
+        100000, 
+        "", 
+        deps
+      );
+
+      assert.equal(deps.struct.mock.callCount(), 1);
+      assert.equal(deps.eraseCartList.mock.callCount(), 1);
+      assert.equal(deps.backHomeQuestion.mock.callCount(), 1);
+
     });
 
     it('Cart as a parameter in handleCart() should be an array', function(){
@@ -341,7 +404,7 @@ describe('\n   ----- Unit Test ----\n', function(){
 
   });
     
-  describe('Branches test', function(){
+  describe('\n\n   Branches test', function(){
     describe('\n   At confirm reorder:', function(){
       it('Function confirmOrder() should call init() to go back to home menu if input matches N', function(){
         const init = mock.fn();
@@ -427,20 +490,126 @@ describe('\n   ----- Unit Test ----\n', function(){
     });
 
     describe('\n\n   At handle transactions:', function(){
-      it('Should call transactionActions() to print the result after sucess do transactions', function(){
-        const transactionActions = mock.fn();
-        handleTransactions('1', cart, "", 100000, transactionActions);
-        assert.equal(transactionActions.mock.callCount(), 1);
+      it('Should call transactionActionsQris() to process with QRIS', function(){
+        const transQris = mock.fn();
+        const transCash = mock.fn();
+
+        handleTransactions('1', cart, "", 100000, transQris, transCash);
+        assert.equal(transQris.mock.callCount(), 1);
       });
+
+      it('Should call transactionActionsCash() to process with QRIS', function(){
+        const transQris = mock.fn();
+        const transCash = mock.fn();
+
+        handleTransactions('2', cart, "", 100000, transQris, transCash);
+        assert.equal(transCash.mock.callCount(), 1);
+      });
+      
 
     });
 
   });
   
-  // describe('Redline Question test', function(){
-  //   it('init() callback must be a function', async function(){
-  //     assert.throws(async () => await init("", handleHomeMenu, 'contoh'), {message:`\n\n   *Action callback must be a function`});
-  //   });  
-  // });
+  describe('\n\n   Redline Question test', function(){
+    // it('init() callback must be a function', async function(){
+    //   assert.throws(async () => await init("", handleHomeMenu, 'contoh'), {message:`\n\n   *Action callback must be a function`});
+    // });  
+
+    it('init should call actionCallback() to trigger next action', async function(){
+      const recoverCallback = mock.fn();
+      const actionCallback = mock.fn();
+      const ask = mock.fn(async () => '');
+
+      await init("", "", actionCallback, recoverCallback, ask);
+      assert.equal(actionCallback.mock.callCount(), 1); 
+    });
+
+    it('init should call recoverCallback() to do recovery if error happend', async function(){
+      const recoverCallback = mock.fn();
+      const ask = mock.fn(async () => '3');
+      const actionCallback = mock.fn(async () => {
+        throw new Error('failed');
+      });
+
+      await init("", "", actionCallback, recoverCallback, ask);
+      assert.equal(recoverCallback.mock.callCount(), 1); 
+    });
+
+
+    it('listQuestion should call actionCallback() to trigger next action', async function(){
+      const recoverCallback = mock.fn();
+      const actionCallback = mock.fn();
+      const ask = mock.fn(async () => '3');
+
+      await listQuestion('1', snacks, "", "" , actionCallback, recoverCallback, ask);
+      assert.equal(actionCallback.mock.callCount(), 1); 
+    });
+
+    it('listQuestion should call recoverCallback() to do recovery if error happend', async function(){
+      const recoverCallback = mock.fn();
+      const ask = mock.fn(async () => '3');
+      const actionCallback = mock.fn(async () => {
+        throw new Error('failed');
+      });
+
+      await listQuestion('1', snacks, "", "", actionCallback, recoverCallback, ask);
+      assert.equal(recoverCallback.mock.callCount(), 1); 
+
+    });
+
+    it('orderConfirmQuestion should call actionCallback() to trigger next action', async function(){
+      const recoverCallback = mock.fn();
+      const actionCallback = mock.fn();
+      const ask = mock.fn(async () => 'y');
+
+      await questions.orderConfirmQuestion('1', '1', actionCallback, ask, recoverCallback);
+      assert.equal(actionCallback.mock.callCount(), 1); 
+    });
+
+    it('orderConfirmQuestion should call recoverCallback() to do recovery if error happend', async function(){
+      const recoverCallback = mock.fn();
+      const ask = mock.fn(async () => 'y');
+      const actionCallback = mock.fn(async () => {
+        throw new Error('failed');
+      });
+
+      await questions.orderConfirmQuestion('1', '1', actionCallback, ask, recoverCallback);
+      assert.equal(recoverCallback.mock.callCount(), 1); 
+
+    });
+
+    it('checkoutQuestion should call actionCallback() to trigger next action', async function(){
+      const recoverCallback = mock.fn();
+      const actionCallback = mock.fn();
+      const ask = mock.fn(async () => 'y');
+
+      await questions.checkoutQuestion(cart, "", actionCallback, ask, recoverCallback);
+      assert.equal(actionCallback.mock.callCount(), 1); 
+    });
+
+    it('checkoutQuestion should call recoverCallback() to do recovery if error happend', async function(){
+      const recoverCallback = mock.fn();
+      const ask = mock.fn(async () => 'y');
+      const actionCallback = mock.fn(async () => {
+        throw new Error('failed');
+      });
+
+      await questions.checkoutQuestion(cart, "", actionCallback, ask, recoverCallback);
+      assert.equal(recoverCallback.mock.callCount(), 1); 
+
+    });
+
+  });
+
+  describe('\n\n   Redline Input test', function(){
+    it('If closeQuestion() get called it should close readline', () => {
+      const spy = mock.method(rl,'close');
+      closeQuestion();
+      assert.equal(spy.mock.callCount(),1);
+      spy.mock.restore();
+
+    });
+  });
 
 });
