@@ -1,22 +1,31 @@
-import { question } from "./input.js";
+import { closeQuestion, question } from "./input.js";
 import { handleHomeMenu } from "../index.js";
 import { shop } from "../actions/choose-item.js";
 import { printing } from "../utils/print.js";
 const { handleHomeMenuText, checkout } = printing;
 
 // 1. --> init home menu
-export async function init(params, quest, actionCallback){
+export async function init(
+  params, 
+  quest, 
+  actionCallback,
+  recoverCallback = init,
+  ask = question
+){
   try{
-    const result = await question(params, quest);
+    if(typeof actionCallback !== 'function'){
+      throw new Error(`\n\n   *Action callback must be a function`);
+    }
+    const result = await ask(params, quest);
     await actionCallback(result);
   } catch(err){
     console.log(err.message);
 
     // retry question
     if(shop.length > 0){
-      return init(params, quest, actionCallback);
+      return recoverCallback(params, handleHomeMenuText, handleHomeMenu);
     } else {
-      return init(params, quest, actionCallback);
+      return recoverCallback("", handleHomeMenuText, handleHomeMenu);
     }
   }
 }
@@ -28,42 +37,51 @@ export async function listQuestion(
   quest,
   handleArr, 
   actionCallback,
+  recoverCallback,
+  ask = question
 ){
   try{
-    const result = await question(item, quest);
-    actionCallback(input, result, item, handleArr);
+    const result = await ask(item, quest);
+    await actionCallback(input, result, item, handleArr);
 
   } catch(err){
     console.log(err.message);
-    return handleHomeMenu(input);
+    return recoverCallback(input);
   }
 }
 
 // 3. --> confirm if the sub-item will be choosen again
-export async function orderConfirmQuestion(params, input, actionCallback) {
-  const result = await question(params, false);
+export async function orderConfirmQuestion(
+  params, 
+  input, 
+  actionCallback,
+  ask = question,
+  recoverCallback = orderConfirmQuestion
+) {
+  const result = await ask(params, false);
   const aswr = result.toLowerCase();
   try {
-    actionCallback(aswr, input, params, init);
+    await actionCallback(aswr, input, params, init);
   } catch(err){
     console.log(err.message);
-    return orderConfirmQuestion(params, input, actionCallback); //retry question
+    return recoverCallback(params, input, actionCallback); //retry question
   }
 }
 
 // 4. --> checkout, print all item in cart and takes some action against them
-export async function checkoutQuestion(shop, quest, actionCallback) {
+export async function checkoutQuestion(
+  shop, 
+  quest, 
+  actionCallback,
+  ask = question,
+  recoverCallback = checkoutQuestion
+) {
   try {
-    const result = await question(shop, quest);
-    actionCallback(result, init, shop, handleHomeMenu, handleHomeMenuText);
-  } catch({message, problem}){
-    console.log(message);
-
-    if(problem === 'cart is empty'){
-      return init("", handleHomeMenuText, handleHomeMenu);
-    } else{
-      return checkoutQuestion(shop, quest, actionCallback);
-    }
+    const result = await ask(shop, quest);
+    await actionCallback(result, init, shop, handleHomeMenu, handleHomeMenuText);
+  } catch(err){
+    console.log(err.message);
+    return recoverCallback(shop, quest, actionCallback);
   }
 }
 
@@ -74,11 +92,12 @@ export async function transactionQuestion(
   shop, 
   resultOrder, 
   actionCallback,
-  errCallback
+  errCallback,
+  transactionActions,
 ){
   try{
     const result = await question(params, false);
-    actionCallback(result, shop, orderQuestion, resultOrder);
+    actionCallback(result, shop, orderQuestion, resultOrder, transactionActions);
 
   } catch(err) {
     console.log(err.message);
@@ -90,7 +109,7 @@ export async function transactionQuestion(
 export async function backHomeQuestion(params, actionCallback){
   try {
     const result = await question(params, false);
-    actionCallback(result, params, init, handleHomeMenu, handleHomeMenuText);
+    actionCallback(result, params, init, handleHomeMenu, handleHomeMenuText, closeQuestion);
   } catch(err){
     console.log(err.message);
     return backHomeQuestion(params, actionCallback); // retry question
@@ -98,7 +117,12 @@ export async function backHomeQuestion(params, actionCallback){
 }
 
 // confirm which item to be deleted in the cart
-export async function eraseQuestion(params, actionCallback){
-  const result = await question(params);
-  return actionCallback(result);
+export async function eraseQuestion(params, shop, recoverCallback, actionCallback){
+  try{
+    const result = await question(params);
+    return actionCallback(shop, result, recoverCallback);
+  } catch(err){
+    console.log(err.message);
+    return recoverCallback('7');
+  }
 }

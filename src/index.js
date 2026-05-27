@@ -16,26 +16,26 @@ const snacks = await getSnacks();
 const paket = await getPaket();
 const happyMeal = await getHappyMeal();
 
-export async function handleHomeMenu(ans) {
+export function handleHomeMenu(ans) {
 
   switch(ans){
   case '1' :
-    listQuestion('1', foods, listItem, handleArr, chooseItem);
+    listQuestion('1', foods, listItem, handleArr, chooseItem, handleHomeMenu);
     break;
   case '2' :
-    listQuestion('2', drinks, listItem, handleArr, chooseItem);
+    listQuestion('2', drinks, listItem, handleArr, chooseItem, handleHomeMenu);
     break;
   case '3' :
-    listQuestion('3', snacks, listItem, handleArr, chooseItem);
+    listQuestion('3', snacks, listItem, handleArr, chooseItem, handleHomeMenu);
     break;
   case '4' :
-    listQuestion('4', desert, listItem, handleArr, chooseItem);
+    listQuestion('4', desert, listItem, handleArr, chooseItem, handleHomeMenu);
     break;
   case '5' :
-    listQuestion('5', paket, listItem, handleArr, chooseItem);
+    listQuestion('5', paket, listItem, handleArr, chooseItem, handleHomeMenu);
     break;
   case '6' :
-    listQuestion('6', happyMeal, listItem, handleArr, chooseItem);
+    listQuestion('6', happyMeal, listItem, handleArr, chooseItem, handleHomeMenu);
     break;        
   case '7' :
     if(shop.length < 1){
@@ -44,9 +44,9 @@ export async function handleHomeMenu(ans) {
     checkoutQuestion(shop, checkout, handleCart);
     break;
   default :
-    throw new Error(`\n\n    *Pilihan tidak tersedia\n`); 
+  { throw new Error(`\n\n    *Pilihan tidak tersedia\n`);} 
+
   }
 }
-
 
 init("", handleHomeMenuText, handleHomeMenu);

@@ -2,14 +2,23 @@ import { handleHomeMenu } from "../index.js";
 import { orderConfirmQuestion } from "../services/questions.js";
 import { printing } from "../utils/print.js";
 export let shop = [];
+let isFound = false;
 
 export function eraseCartList(){
+  if(shop.length < 1){
+    throw new Error(`\n\n     *Cart already empty`);
+  }
   shop = [];
 }
 
 const { handleHomeMenuText, choosenItemList } = printing;
 
-function confirmOrder(result, input, params, init){
+export function confirmOrder(result, input, params, init){
+
+  if(typeof init !== "function"){
+    throw new Error(`\n\n     *Parameter init for go back to home menu must be a function`);
+  }
+  
   switch(result){
   case 'y' :
     return handleHomeMenu(input); 
@@ -21,15 +30,35 @@ function confirmOrder(result, input, params, init){
 }
 
 export function chooseItem(input, answer, listItems, handleArr) {
+  
+  if(!(Array.isArray(listItems))){
+    throw new Error(`\n\n     *List item as a function must be an array`);
+  }
+
+  if(listItems.length < 1){
+    throw new Error(`\n\n     *List item as a function can not be empty array`);
+  }
+
   const items = handleArr(listItems);
   const currInput = answer-1;
-  let isFound = false;
 
   if(answer > items.length || isNaN(currInput)){
     throw new Error(`\n\n    *Pilihan tidak tersedia.`);
   }
    
   // add item to cart actions
+  cartActions(items, currInput);
+   
+  if(isFound){
+    // print all the choosen items
+    choosenItemList(shop);
+       
+    // asking order confirmation
+    orderConfirmQuestion('\n    Ada lagi? (Y/N): ', input, confirmOrder);
+  }
+}
+
+export default function cartActions(items, currInput){
   items.forEach((item, index) => {
     if(currInput === index){
       isFound = true;
@@ -50,7 +79,7 @@ export function chooseItem(input, answer, listItems, handleArr) {
         }
       } else {
         const find = shop.find((val) => val.id === item.id);
-   
+        const findIdx = shop.findIndex((val) => val.id === item.id);
         if(!find){
           shop = [ 
             ...shop,
@@ -70,28 +99,20 @@ export function chooseItem(input, answer, listItems, handleArr) {
           } 
         }
         else if(find) {
-          shop.forEach((shopVal) => {
-            if(item.id === shopVal.id){
-              if(item.name === shopVal.name && !item.size && !shopVal.size){
-                return shopVal.qty += 1;
-              }
-              else if((item?.size && shopVal?.size) && item?.size === shopVal?.size){
-                return shopVal.qty += 1;
-              }
-            } 
-          });
+          shop[findIdx].qty += 1;
+          // shop.forEach((shopVal) => {
+          //   if(item.id === shopVal.id){
+          //     if(item.name === shopVal.name && !item.size && !shopVal.size){
+          //       return shopVal.qty += 1;
+          //     }
+          //     else if((item?.size && shopVal?.size) && item?.size === shopVal?.size){
+          //       return shopVal.qty += 1;
+          //     }
+          //   } 
+          // });
         }
       }
    
     } 
   });
-   
-  if(isFound){
-    // print all the choosen items
-    choosenItemList(shop);
-       
-    // asking order confirmation
-    orderConfirmQuestion('\n    Ada lagi? (Y/N): ', input, confirmOrder);
-  }
-
-}
+};
