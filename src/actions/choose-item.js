@@ -173,19 +173,7 @@ export default function cartActions(items, currInput){
             shop[lastIndex].menu = item.menu;
           } 
         }
-        else if(find) {
-          shop[findIdx].qty += 1;
-          // shop.forEach((shopVal) => {
-          //   if(item.id === shopVal.id){
-          //     if(item.name === shopVal.name && !item.size && !shopVal.size){
-          //       return shopVal.qty += 1;
-          //     }
-          //     else if((item?.size && shopVal?.size) && item?.size === shopVal?.size){
-          //       return shopVal.qty += 1;
-          //     }
-          //   } 
-          // });
-        }
+        else if(find) shop[findIdx].qty += 1;
       }
    
     } 
