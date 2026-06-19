@@ -12,7 +12,10 @@ import { shop } from "../src/actions/choose-item.js";
 import moneyFormat from "../src/utils/money-format.js";
 import { confirmOrder } from "../src/actions/choose-item.js";
 import { printing } from "../src/utils/print.js";
-import { confirmBackHome, handleTransactions, transactionActionsQris, transactionActionsCash } from "../src/actions/handle-checkout.js";
+import { confirmBackHome, 
+  handleTransactions, 
+  transactionActionsQris, 
+  transactionActionsCash } from "../src/actions/handle-checkout.js";
 import { eraseCart, handleCart, splicingItem } from "../src/actions/handle-cart.js";
 import * as questions from '../src/services/questions.js';
 import { listQuestion } from "../src/services/questions.js";
@@ -511,11 +514,7 @@ describe('\n   ----- Unit Test ----\n', function(){
 
   });
   
-  describe('\n\n   Redline Question test', function(){
-    // it('init() callback must be a function', async function(){
-    //   assert.throws(async () => await init("", handleHomeMenu, 'contoh'), {message:`\n\n   *Action callback must be a function`});
-    // });  
-
+  describe('\n\n   Readline Question test', function(){
     it('init should call actionCallback() to trigger next action', async function(){
       const recoverCallback = mock.fn();
       const actionCallback = mock.fn();
@@ -602,13 +601,12 @@ describe('\n   ----- Unit Test ----\n', function(){
 
   });
 
-  describe('\n\n   Redline Input test', function(){
+  describe('\n\n   Readline Input test', function(){
     it('If closeQuestion() get called it should close readline', () => {
       const spy = mock.method(rl,'close');
       closeQuestion();
       assert.equal(spy.mock.callCount(),1);
       spy.mock.restore();
-
     });
   });
 
